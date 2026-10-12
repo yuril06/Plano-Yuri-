@@ -170,18 +170,18 @@ const RUNS={
 };
 
 const GYM={
- supA:['Superior A','força',[['Supino reto com barra','4×5–6 · RIR 2','55–60 kg'],['Barra fixa','4×5–6','peso corporal'],['Desenvolvimento em pé','3×6–8','35–40 kg'],['Remada curvada','3×8','50 kg'],['Paralelas','3×8–10','peso corporal'],['Rosca direta + tríceps testa','3×10 · bi-set',''],['Face pull','3×15','leve']]],
+ supA:['Superior A','força',[['Supino reto com halteres','4×6–8 · RIR 2','26–28 kg cada'],['Barra fixa','4×5–6','peso corporal'],['Desenvolvimento em pé','3×6–8','35–40 kg'],['Remada curvada','3×8','50 kg'],['Paralelas','3×8–10','peso corporal'],['Rosca direta + tríceps testa','3×10 · bi-set',''],['Crucifixo inverso na máquina','3×15','peck deck invertido · ou halteres no banco inclinado']]],
  infB:['Inferior B','unilateral e potência',[['Salto horizontal','3×4','distância máxima'],['Terra convencional','3×5 · RIR 3','80 kg'],['Step-up com halteres','3×10 cada perna','2×10 kg · esquerda primeiro'],['Leg press','3×10–12 · RIR 2',''],['Mesa flexora','3×10–12',''],['Panturrilha sentado','3×15',''],['Pallof press','3×10 cada lado','']]],
- braco:['Braços e ombros','volume',[['Supino fechado','4×6–8 · RIR 2','45–50 kg'],['Rosca W','4×8–10','25–30 kg'],['Rosca inclinada','3×10–12','10–12 kg'],['Tríceps francês na polia','3×12–15',''],['Rosca Scott','3×12',''],['Elevação lateral','4×15 · última até a falha',''],['Crucifixo inverso','3×15',''],['Encolhimento com halteres','3×12','pesado'],['Rosca de punho','2×15','']]],
+ braco:['Peito, braços e ombros','volume',[['Supino inclinado com barra','3×8–10 · RIR 1–2','45–50 kg · peito primeiro'],['Supino fechado','4×6–8 · RIR 2','45–50 kg'],['Rosca W','4×8–10','25–30 kg'],['Rosca inclinada','3×10–12','10–12 kg'],['Tríceps francês na polia','3×12–15',''],['Elevação lateral','4×15 · última até a falha',''],['Crucifixo inverso','3×15',''],['Encolhimento com halteres','3×12','pesado']]],
  infA:['Inferior A','força',[['Salto na caixa','3×5',''],['Agachamento livre','4×5 · RIR 2','75 kg'],['Stiff','3×6–8 · RIR 2','60 kg'],['Búlgaro com halteres','3×8 cada perna','2×12 kg · esquerda primeiro'],['Panturrilha em pé','4×10–12','pausa 1 s embaixo'],['Roda abdominal','3×8–10','']]],
- supB:['Superior B','hipertrofia',[['Supino inclinado com halteres','4×8–12','22–24 kg'],['Puxada pegada neutra','4×8–12',''],['Remada unilateral','3×10–12 cada','26–30 kg'],['Desenvolvimento com halteres','3×10–12','16–18 kg'],['Elevação lateral','4×12–15',''],['Crossover','3×12–15',''],['Martelo + tríceps corda','3×12 · bi-set',''],['Farmer walk','3×40 m','halteres pesados']]]
+ supB:['Superior B','hipertrofia',[['Supino inclinado com halteres','4×8–12','22–24 kg'],['Puxada pegada neutra','4×8–12',''],['Remada unilateral','3×10–12 cada','26–30 kg'],['Desenvolvimento com halteres','3×10–12','16–18 kg'],['Elevação lateral','4×12–15',''],['Crossover','4×12–15','aperta 1 s no final'],['Martelo + tríceps corda','3×12 · bi-set',''],['Farmer walk','3×40 m','halteres pesados']]]
 };
 const GYM_BY_DOW={1:'supA',2:'infB',3:'braco',4:'infA',5:'supB'};
 const NOTES={
  0:'Dia de longão. Sem academia.',
  1:'A perna descansa do longão. Academia de cima + bike.',
  2:'Corrida leve primeiro, academia logo depois.',
- 3:'Sem corrida hoje. Braço, ombro e bike.',
+ 3:'Sem corrida hoje. Peito, braço, ombro e bike.',
  4:'Dia duro. Se der, corre de manhã e faz perna à tarde; se não, corrida primeiro e perna logo depois.',
  5:'Corrida leve primeiro, academia logo depois. Leve mesmo: domingo tem longão.',
  6:'Recuperação. Alongamento, bike opcional e pula a refeição do acordar.'
@@ -190,11 +190,11 @@ const NOTES={
 function meals(dow){
  const m=[];
  if(dow!==6) m.push(['m1','Ao acordar','',dow===0?'1 tapioca com mel + 1 banana':'1 banana com mel, ou 1 tapioca pequena com mel','30–45 min antes de treinar']);
- m.push(['m2','Pós-treino','35 g','3 ovos mexidos + 1 tapioca média ou 1 pão + 1 copo de leite + 3–4 colheres de aveia com banana ou mamão','Sem leite: <b>4 ovos</b>']);
- m.push(['m3','Almoço','40 g',(dow===0?'200':'150')+' g de arroz cozido + 1 concha de feijão + salada + fio de azeite + proteína','<b>130–150 g</b> de carne ou frango · ou <b>100 g + 2 ovos</b> · ou <b>5 ovos</b>']);
+ m.push(['m2','Pós-treino','35 g','2 ovos mexidos + 1 tapioca média ou 1 pão + 1 copo de leite batido com 30 g de leite em pó + 40 g de aveia com banana ou mamão','']);
+ m.push(['m3','Almoço','40 g',(dow===0?'200':'150')+' g de arroz cozido + 1 concha de feijão + salada + fio de azeite + proteína','<b>150 g</b> de frango, carne moída ou bife · ou <b>100 g + 2 ovos</b>']);
  m.push(['m4','Café da tarde','25 g','1 copo de leite + 1 tapioca com 2 fatias de queijo + 1 fruta','Sem queijo: <b>2 ovos</b> na tapioca']);
- m.push(['m5','Jantar','35 g','125 g de arroz cozido, ou 150 g de macarrão cozido, ou 200 g de batata ou mandioca + legumes + proteína','<b>120 g</b> de carne ou frango · ou <b>100 g + 1 ovo</b> · ou <b>4 ovos</b>']);
- m.push(['m6','Ceia','20 g','3 ovos mexidos + 1 fruta','Ou: 1 copo de leite + 3 colheres de aveia + 1 ovo']);
+ m.push(['m5','Jantar','35 g','125 g de arroz cozido, ou 150 g de macarrão cozido, ou 200 g de batata ou mandioca + legumes + proteína','<b>120–150 g</b> de frango, carne moída ou bife · ou <b>100 g + 1 ovo</b>']);
+ m.push(['m6','Ceia','20 g','1 copo de leite batido com 30 g de leite em pó + 40 g de aveia + 1 fruta','Ou: <b>3 ovos mexidos</b> + 1 fruta']);
  return m;
 }
 
@@ -328,8 +328,8 @@ function render(){
   if(p.bikeOpt) h+=row('bikeOpt','Bike leve<span class="optional">opcional</span>','<span class="mono">até 20 min</span><span>amanhã tem longão</span>');
   h+='</div></section>';}
  h+=`<section><div class="sh"><h2>Dieta</h2><span class="chip fuel">165 g proteína</span></div><div class="list">`;
- p.meals.forEach(m=>{h+=row(m[0],esc(m[1])+(m[2]?`<span class="pro">${m[2]}</span>`:''),`<span>${esc(m[3])}</span>`,`<div class="opt">${m[4]}</div>`,'meal');});
- h+=`</div><div class="swap"><span>100 g carne ou frango</span><span class="mono">≈ 30 g · 5 ovos</span><span>1 ovo</span><span class="mono">6 g</span><span>1 copo de leite</span><span class="mono">8 g</span><span>1 fatia de queijo</span><span class="mono">5 g</span></div></section>`;
+ p.meals.forEach(m=>{h+=row(m[0],esc(m[1])+(m[2]?`<span class="pro">${m[2]}</span>`:''),`<span>${esc(m[3])}</span>`,(m[4]?`<div class="opt">${m[4]}</div>`:''),'meal');});
+ h+=`</div><div class="swap"><span>100 g carne ou frango</span><span class="mono">≈ 30 g</span><span>30 g leite em pó</span><span class="mono">8 g</span><span>1 ovo · completa quando faltar</span><span class="mono">6 g</span><span>1 copo de leite</span><span class="mono">8 g</span><span>1 fatia de queijo</span><span class="mono">5 g</span></div></section>`;
  h+=`<section><div class="sh"><h2>Todo dia</h2></div><div class="list">${row('creatina','Creatina','<span class="mono">3–5 g</span><span>em qualquer refeição</span>')}${row('agua','Água','<span class="mono">3 litros</span>')}</div></section>`;
  main.innerHTML=h;
 }
