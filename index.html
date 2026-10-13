@@ -157,7 +157,7 @@ const MON=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','de
 
 const RUNS={
  '2026-10-11':['longao',6,'Longão'],
- '2026-10-14':['leve',4.5],'2026-10-16':['qual',5,'400 m repetições','10 min leve · 8×400 m forte (~4:40/km) com 1:30 de trote · 5 min leve. Provisório até chegar o detalhe do Runna.'],'2026-10-17':['leve',4.5,'','Leve e curta de verdade: amanhã tem longão.'],'2026-10-18':['longao',6.5,'Longão'],
+ '2026-10-13':['leve',4.5],'2026-10-15':['qual',5,'400 m repetições','10 min leve · 8×400 m forte (~4:40/km) com 1:30 de trote · 5 min leve. Provisório até chegar o detalhe do Runna.'],'2026-10-16':['leve',4.5],'2026-10-18':['longao',6.5,'Longão'],
  '2026-10-20':['leve',6],'2026-10-22':['qual',4.5,'Corrida progressiva','Começa leve e acelera aos poucos; o último km é o mais forte.'],'2026-10-23':['leve',4.5],'2026-10-25':['longao',7,'Longão progressivo','Leve na maior parte; os últimos 2 km um pouco mais firmes.'],
  '2026-10-27':['leve',6.5],'2026-10-29':['qual',5.5,'300 m variáveis'],'2026-10-30':['leve',4],'2026-11-01':['longao',7.5,'Longão'],
  '2026-11-03':['leve',5.5],'2026-11-05':['qual',4.9,'Contrarrelógio de 2 milhas','Teste: 3,2 km no máximo. Esse tempo recalcula teus paces.'],'2026-11-06':['leve',5],'2026-11-08':['longao',6,'Longão'],
@@ -213,23 +213,19 @@ let state={},loads={};
 try{state=JSON.parse(localStorage.getItem('hoje-checks')||'{}')||{};}catch(e){state={};}
 try{loads=JSON.parse(localStorage.getItem('hoje-loads')||'{}')||{};}catch(e){loads={};}
 
-const OVR={'2026-10-13':{rest:true},'2026-10-14':{dow:2},'2026-10-15':{dow:3},'2026-10-16':{dow:4},'2026-10-17':{dow:5}};
-const effDow=k=>{const o=OVR[k];return o&&o.dow!=null?o.dow:fromKey(k).getUTCDay();};
-const gymKeyFor=k=>(k==='2026-10-11'||(OVR[k]&&OVR[k].rest))?null:GYM_BY_DOW[effDow(k)];
 function plan(k){
  if(k<START||k>END) return null;
- const rest=!!(OVR[k]&&OVR[k].rest);
- const dow=effDow(k);
+ const dow=fromKey(k).getUTCDay();
  const items=[];
- const blocks={dow,rest};
+ const blocks={dow};
  const r=RUNS[k];
  if(r){blocks.run=r;items.push('run');}
- if(gymKeyFor(k)){const g=GYM[gymKeyFor(k)];blocks.gym=g;blocks.gymKey=gymKeyFor(k);g[2].forEach((_,i)=>items.push('g'+i));}
- if(k!=='2026-10-11'&&!rest){
+ if(k>=START && k!=='2026-10-11' && GYM_BY_DOW[dow]){const g=GYM[GYM_BY_DOW[dow]];blocks.gym=g;blocks.gymKey=GYM_BY_DOW[dow];g[2].forEach((_,i)=>items.push('g'+i));}
+ if(k!=='2026-10-11'){
   if(dow===1||dow===3) {blocks.bike='20–30 min leve, conversando';items.push('bike');}
   if(dow===6){blocks.along=true;items.push('along');blocks.bikeOpt=true;}
  }
- blocks.meals=meals(rest?6:dow);blocks.meals.forEach(m=>items.push(m[0]));
+ blocks.meals=meals(dow);blocks.meals.forEach(m=>items.push(m[0]));
  items.push('creatina','agua');
  blocks.items=items;
  return blocks;
@@ -278,7 +274,8 @@ function setView(v){view=v;document.getElementById('tabDay').setAttribute('aria-
  document.getElementById('dayHead').hidden=v!=='day';document.getElementById('week').hidden=v!=='day';render();window.scrollTo(0,0);}
 function lastLoad(gk,i,before){
  for(let k=addDays(before,-1);k>=START;k=addDays(k,-1)){
-  if(gymKeyFor(k)===gk){const v=(loads[k]||{})['g'+i];if(v)return {v,k};}
+  const dw=fromKey(k).getUTCDay();
+  if(k!=='2026-10-11'&&GYM_BY_DOW[dw]===gk){const v=(loads[k]||{})['g'+i];if(v)return {v,k};}
  }
  return null;
 }
@@ -297,7 +294,7 @@ function render(){
  document.getElementById('prev').disabled=sel<=START;
  document.getElementById('next').disabled=sel>=END;
  const p=plan(sel);
- document.getElementById('dayNote').textContent=p?(sel==='2026-10-11'?'Largada do plano. Tua maior distância até hoje: vai leve e completa.':p.rest?'Folga. Treino da semana empurrado um dia: o de terça vai pra quarta, e assim por diante até sábado. Come normal e bebe água.':(sel>='2026-12-14'&&dow>=1&&dow<=5?'Semana de descarga: mesma carga, metade das séries, nada até a falha. ':'')+NOTES[p.dow]):'';
+ document.getElementById('dayNote').textContent=p?(sel==='2026-10-11'?'Largada do plano. Tua maior distância até hoje: vai leve e completa.':(sel>='2026-12-14'&&dow>=1&&dow<=5?'Semana de descarga: mesma carga, metade das séries, nada até a falha. ':'')+NOTES[dow]):'';
  const st=stats(sel)||{done:0,total:0};
  const pct=st.total?Math.round(st.done/st.total*100):0;
  const bar=document.getElementById('bar');bar.firstElementChild.style.width=pct+'%';bar.classList.toggle('full',st.total&&st.done===st.total);
