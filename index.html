@@ -150,23 +150,21 @@ footer{display:flex;justify-content:space-between;gap:12px;align-items:center;fo
 
 <script>
 (function(){
-const START='2026-10-11', END='2026-12-20';
+const START='2026-10-19', END='2026-12-13';
+const GYM_ON=false; // muda pra true quando voltar pra academia
 const DOW=['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
 const DOWS=['D','S','T','Q','Q','S','S'];
 const MON=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 
 const RUNS={
- '2026-10-11':['longao',6,'Longão'],
- '2026-10-13':['leve',4.5],'2026-10-15':['qual',5,'400 m repetições','10 min leve · 8×400 m forte (~4:40/km) com 1:30 de trote · 5 min leve. Provisório até chegar o detalhe do Runna.'],'2026-10-16':['leve',4.5],'2026-10-18':['longao',6.5,'Longão'],
- '2026-10-20':['leve',6],'2026-10-22':['qual',4.5,'Corrida progressiva','Começa leve e acelera aos poucos; o último km é o mais forte.'],'2026-10-23':['leve',4.5],'2026-10-25':['longao',7,'Longão progressivo','Leve na maior parte; os últimos 2 km um pouco mais firmes.'],
- '2026-10-27':['leve',6.5],'2026-10-29':['qual',5.5,'300 m variáveis'],'2026-10-30':['leve',4],'2026-11-01':['longao',7.5,'Longão'],
- '2026-11-03':['leve',5.5],'2026-11-05':['qual',4.9,'Contrarrelógio de 2 milhas','Teste: 3,2 km no máximo. Esse tempo recalcula teus paces.'],'2026-11-06':['leve',5],'2026-11-08':['longao',6,'Longão'],
- '2026-11-10':['leve',6.5],'2026-11-12':['qual',6,'1 km forte / leve'],'2026-11-13':['leve',5],'2026-11-15':['longao',8,'Longão com trecho intenso'],
- '2026-11-17':['leve',6],'2026-11-19':['qual',7,'500 m variáveis'],'2026-11-20':['leve',5],'2026-11-22':['longao',9,'Longão'],
- '2026-11-24':['leve',7.5],'2026-11-26':['qual',6,'De 400 m para 200 m'],'2026-11-27':['leve',6],'2026-11-29':['longao',10,'Longão'],
- '2026-12-01':['leve',8],'2026-12-03':['qual',7,'1 km em ritmos alternados'],'2026-12-04':['leve',5.5],'2026-12-06':['longao',11,'Longão repetido progressivo'],
- '2026-12-08':['leve',7.5],'2026-12-10':['qual',7.5,'8-4-2 repetições rápidas'],'2026-12-11':['leve',7],'2026-12-13':['longao',12,'Longão','Último longão do bloco. Semana que vem é descarga com teste de 10 km.'],
- '2026-12-15':['leve',6,'','Leve de verdade: semana de descarga.'],'2026-12-17':['qual',6,'4×1 km no ritmo de 10 km','10 min leve · 4×1 km no pace que você acha que segura nos 10 km, 2 min de trote entre · 5 min leve. Só pra afiar, sem se matar.'],'2026-12-18':['leve',4,'','Bem solto. Domingo é o teste.'],'2026-12-20':['longao',10,'Teste de 10 km','Aquece 10 min trotando e corre 10 km no melhor ritmo que conseguir segurar até o fim. Começa controlado e acelera na segunda metade. Esse tempo define o próximo bloco.']
+ '2026-10-20':['qual',4.5,'6×1 min forte','10 min leve · 6×1 min a 5:00–5:10/km com 1:30 de trote · 5 min leve. Primeira semana de volta: forte, mas sem se matar.'],'2026-10-22':['leve',4],'2026-10-25':['longao',6,'Longão'],
+ '2026-10-27':['qual',5,'8×400 m','10 min leve · 8×400 m a 4:45–4:55/km com 1:30 de trote · 5 min leve.'],'2026-10-29':['leve',5],'2026-11-01':['longao',7,'Longão'],
+ '2026-11-03':['qual',5.5,'4×5 min no limiar','10 min leve · 4×5 min a 5:35–5:45/km com 2 min de trote · 5 min leve. Forte, mas controlado: dá pra falar 3 ou 4 palavras.'],'2026-11-05':['leve',5],'2026-11-08':['longao',7.5,'Longão'],
+ '2026-11-10':['qual',4.5,'6×1 min forte','Semana de descarga. 10 min leve · 6×1 min a 5:00–5:10/km com 1:30 de trote · 5 min leve.'],'2026-11-12':['leve',4,'','Bem solto. Domingo é o teste.'],'2026-11-15':['qual',5,'Teste de 5 km','Aquece 10 min trotando e corre 5 km no máximo. Começa controlado e acelera na segunda metade. Manda o tempo que eu recalculo os paces.'],
+ '2026-11-17':['qual',7,'5×1 km','10 min leve · 5×1 km a 5:00–5:10/km com 2 min de trote · 5 min leve. É o ritmo do Hyrox e do 5 km.'],'2026-11-19':['leve',5],'2026-11-22':['longao',8,'Longão'],
+ '2026-11-24':['qual',7,'3×8 min no limiar','10 min leve · 3×8 min a 5:35–5:45/km com 2 min de trote · 5 min leve.'],'2026-11-26':['leve',6],'2026-11-29':['longao',9,'Longão'],
+ '2026-12-01':['qual',7,'6×800 m','10 min leve · 6×800 m a 4:55–5:05/km com 2 min de trote · 5 min leve.'],'2026-12-03':['leve',6],'2026-12-06':['longao',10,'Longão','Primeira vez nos 10 km. Leve do começo ao fim.'],
+ '2026-12-08':['qual',5,'4×400 m','Polimento. 10 min leve · 4×400 m soltos e rápidos com 2 min de trote · 5 min leve.'],'2026-12-10':['leve',4,'','Bem solto. Domingo é a prova.'],'2026-12-13':['prova',5,'Prova de 5 km','Tua primeira prova. Aquece 10 min trotando. Larga controlado no 1º km, segura o ritmo e acelera no último. Data provisória: muda quando escolher a prova.']
 };
 
 const GYM={
@@ -177,14 +175,18 @@ const GYM={
  supB:['Superior B','hipertrofia',[['Supino inclinado com halteres','4×8–12','22–24 kg'],['Puxada pegada neutra','4×8–12',''],['Remada unilateral','3×10–12 cada','26–30 kg'],['Desenvolvimento com halteres','3×10–12','16–18 kg'],['Elevação lateral','4×12–15',''],['Crossover','4×12–15','aperta 1 s no final'],['Martelo + tríceps corda','3×12 · bi-set',''],['Farmer walk','3×40 m','halteres pesados']]]
 };
 const GYM_BY_DOW={1:'supA',2:'infB',3:'braco',4:'infA',5:'supB'};
+const CASA={
+ casaA:['Casa A','empurrar e pernas',[['Flexão de braço','4×máx · para 1–2 antes da falha',''],['Flexão com pés elevados','3×10–15','pés no sofá ou cadeira'],['Mergulho entre cadeiras','3×10–15','tríceps'],['Pike push-up','3×8–12','ombro'],['Búlgaro com mochila','3×10–12 cada perna','pé de trás no sofá · esquerda primeiro'],['Agachamento com mochila','3×15–20','desce devagar, 3 s'],['Prancha','3×45 s','']]],
+ casaB:['Casa B','puxar e posterior',[['Barra fixa','4×máx','praça ou barra de porta · sem barra: remada invertida na mesa 4×10–15'],['Remada curvada com mochila','3×12–15','aperta as escápulas'],['Stiff unilateral com mochila','3×10 cada perna','esquerda primeiro'],['Ponte de glúteo unilateral','3×12 cada perna',''],['Rosca com mochila ou galão','3×12–15',''],['Elevação lateral com garrafas','3×15–20','galão de 5 L ou garrafas de água'],['Panturrilha unilateral no degrau','3×15 cada','']]]
+};
 const NOTES={
- 0:'Dia de longão. Sem academia.',
- 1:'A perna descansa do longão. Academia de cima + bike.',
- 2:'Corrida leve primeiro, academia logo depois.',
- 3:'Sem corrida hoje. Peito, braço, ombro e bike.',
- 4:'Dia duro. Se der, corre de manhã e faz perna à tarde; se não, corrida primeiro e perna logo depois.',
- 5:'Corrida leve primeiro, academia logo depois. Leve mesmo: domingo tem longão.',
- 6:'Recuperação. Alongamento, bike opcional e pula a refeição do acordar.'
+ 0:'Longão. Leve do começo ao fim: ritmo de conversa.',
+ 1:'Treino em casa. Sem corrida hoje.',
+ 2:'Dia de qualidade na corrida. Aquece bem e respeita os trotes.',
+ 3:'Treino em casa. Sem corrida hoje.',
+ 4:'Corrida leve, ritmo de conversa. No fim, 4–6 acelerações de 20 s.',
+ 5:'Treino em casa. Amanhã é descanso.',
+ 6:'Descanso. Alongamento e pula a refeição do acordar.'
 };
 
 function meals(dow){
@@ -203,7 +205,8 @@ const toKey=d=>d.getUTCFullYear()+'-'+pad(d.getUTCMonth()+1)+'-'+pad(d.getUTCDat
 const fromKey=k=>{const [y,m,d]=k.split('-').map(Number);return new Date(Date.UTC(y,m-1,d));};
 const addDays=(k,n)=>{const d=fromKey(k);d.setUTCDate(d.getUTCDate()+n);return toKey(d);};
 const localToday=()=>{const n=new Date();return n.getFullYear()+'-'+pad(n.getMonth()+1)+'-'+pad(n.getDate());};
-const weekNum=k=>k<='2026-10-11'?0:1+Math.floor((fromKey(k)-fromKey('2026-10-12'))/(7*864e5));
+const weekNum=k=>1+Math.floor((fromKey(k)-fromKey(START))/(7*864e5));
+const NWEEKS=8;
 const kmFmt=n=>String(n).replace('.',',');
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
@@ -213,6 +216,13 @@ let state={},loads={};
 try{state=JSON.parse(localStorage.getItem('hoje-checks')||'{}')||{};}catch(e){state={};}
 try{loads=JSON.parse(localStorage.getItem('hoje-loads')||'{}')||{};}catch(e){loads={};}
 
+function gymKeyFor(k){
+ const dow=fromKey(k).getUTCDay();
+ if(GYM_ON) return GYM_BY_DOW[dow]||null;
+ if(dow!==1&&dow!==3&&dow!==5) return null;
+ const odd=weekNum(k)%2===1;
+ return (dow===3)===odd?'casaB':'casaA';
+}
 function plan(k){
  if(k<START||k>END) return null;
  const dow=fromKey(k).getUTCDay();
@@ -220,11 +230,10 @@ function plan(k){
  const blocks={dow};
  const r=RUNS[k];
  if(r){blocks.run=r;items.push('run');}
- if(k>=START && k!=='2026-10-11' && GYM_BY_DOW[dow]){const g=GYM[GYM_BY_DOW[dow]];blocks.gym=g;blocks.gymKey=GYM_BY_DOW[dow];g[2].forEach((_,i)=>items.push('g'+i));}
- if(k!=='2026-10-11'){
-  if(dow===1||dow===3) {blocks.bike='20–30 min leve, conversando';items.push('bike');}
-  if(dow===6){blocks.along=true;items.push('along');blocks.bikeOpt=true;}
- }
+ const gk=gymKeyFor(k);
+ if(gk){const g=GYM[gk]||CASA[gk];blocks.gym=g;blocks.gymKey=gk;blocks.casa=!!CASA[gk];g[2].forEach((_,i)=>items.push('g'+i));}
+ if(GYM_ON&&(dow===1||dow===3)){blocks.bike='20–30 min leve, conversando';items.push('bike');}
+ if(dow===6){blocks.along=true;items.push('along');}
  blocks.meals=meals(dow);blocks.meals.forEach(m=>items.push(m[0]));
  items.push('creatina','agua');
  blocks.items=items;
@@ -239,8 +248,8 @@ function row(key,title,metaHtml,extra,cls){
 }
 
 let view='day';
-const weekStart=n=>n===0?'2026-10-11':addDays('2026-10-12',7*(n-1));
-const weekDays=n=>{if(n===0)return ['2026-10-11'];const s=weekStart(n);return [0,1,2,3,4,5,6].map(i=>addDays(s,i));};
+const weekStart=n=>addDays(START,7*(n-1));
+const weekDays=n=>{const s=weekStart(n);return [0,1,2,3,4,5,6].map(i=>addDays(s,i));};
 function fmtD(k){const d=fromKey(k);return d.getUTCDate()+' '+MON[d.getUTCMonth()];}
 function renderPlan(){
  const all=[];for(let k=START;k<=END;k=addDays(k,1))all.push(k);
@@ -252,21 +261,20 @@ function renderPlan(){
   if(k<=TODAY){past++;const st=stats(k);if(st.done===st.total)full++;}
  });
  const pc=(a,b)=>b?Math.round(a/b*100):0;
- const curW=TODAY<START?0:TODAY>END?10:weekNum(TODAY);
- let h=`<header><span class="eyebrow">Bloco · 11 out a 20 dez</span><h1>${curW?'Semana '+curW+' de 10':'Largada'}</h1><p class="note">${kmFmt(Math.round(kmD*10)/10)} de ${kmFmt(Math.round(kmT*10)/10)} km corridos. Toca numa semana pra abrir os dias.</p></header>`;
+ const curW=TODAY<START?0:TODAY>END?NWEEKS:weekNum(TODAY);
+ let h=`<header><span class="eyebrow">Fase 1 · rumo aos 5 km · 19 out a 13 dez</span><h1>${curW?'Semana '+curW+' de '+NWEEKS:'Começa 19 out'}</h1><p class="note">${kmFmt(Math.round(kmD*10)/10)} de ${kmFmt(Math.round(kmT*10)/10)} km corridos. Toca numa semana pra abrir os dias.</p></header>`;
  h+=`<div class="stats">
   <div class="stat"><span class="v">${runD}<small>/ ${runT}</small></span><span class="l">corridas feitas</span><div class="bar"><i style="width:${pc(runD,runT)}%"></i></div></div>
-  <div class="stat"><span class="v">${gymD}<small>/ ${gymT}</small></span><span class="l">treinos de academia completos</span><div class="bar"><i style="width:${pc(gymD,gymT)}%"></i></div></div>
+  <div class="stat"><span class="v">${gymD}<small>/ ${gymT}</small></span><span class="l">treinos de força completos</span><div class="bar"><i style="width:${pc(gymD,gymT)}%"></i></div></div>
   <div class="stat"><span class="v">${pc(mealD,mealT)}<small>%</small></span><span class="l">refeições cumpridas até hoje</span><div class="bar"><i style="width:${pc(mealD,mealT)}%"></i></div></div>
   <div class="stat"><span class="v">${full}<small>/ ${past}</small></span><span class="l">dias 100% até hoje</span><div class="bar"><i style="width:${pc(full,past)}%"></i></div></div>
  </div>`;
  h+=`<section><div class="sh"><h2>Semanas</h2><span class="chip">km da semana</span></div><p class="legend">A barra mostra os km já corridos sobre o planejado. Os traços embaixo são os dias; o número é a distância da corrida.</p><div class="weeks">`;
- for(let n=0;n<=10;n++){const days=weekDays(n);let wT=0,wD=0;days.forEach(k=>{const r=RUNS[k];if(r){wT+=r[1];if((state[k]||{}).run)wD+=r[1];}});
-  const range=n===0?'11 out':fmtD(days[0])+' – '+fmtD(days[6]);
+ for(let n=1;n<=NWEEKS;n++){const days=weekDays(n);let wT=0,wD=0;days.forEach(k=>{const r=RUNS[k];if(r){wT+=r[1];if((state[k]||{}).run)wD+=r[1];}});
+  const range=fmtD(days[0])+' – '+fmtD(days[6]);
   let dots='';
-  if(n===0){for(let i=0;i<6;i++)dots+='<span class="dot"></span>';}
   days.forEach(k=>{const st=stats(k),p2=st?pc(st.done,st.total):0,r=RUNS[k];dots+=`<span class="dot ${r&&r[0]!=='leve'?'q':''}"><b class="${st&&st.total&&st.done===st.total?'full':''}"><i style="width:${p2}%"></i></b>${r?kmFmt(r[1]):'·'}</span>`;});
-  h+=`<button class="wk ${n===curW?'cur':''}" data-w="${n}"><div class="wk-top"><span class="wk-n">${n?'Semana '+n:'Largada'}<span class="wk-d">${range}</span></span><span class="wk-km">${kmFmt(Math.round(wD*10)/10)} / ${kmFmt(wT)} km</span></div><div class="kmbar"><i style="width:${pc(wD,wT)}%"></i></div><div class="dots">${dots}</div></button>`;}
+  h+=`<button class="wk ${n===curW?'cur':''}" data-w="${n}"><div class="wk-top"><span class="wk-n">Semana ${n}<span class="wk-d">${range}</span></span><span class="wk-km">${kmFmt(Math.round(wD*10)/10)} / ${kmFmt(wT)} km</span></div><div class="kmbar"><i style="width:${pc(wD,wT)}%"></i></div><div class="dots">${dots}</div></button>`;}
  h+='</div></section>';
  document.getElementById('main').innerHTML=h;
 }
@@ -274,27 +282,27 @@ function setView(v){view=v;document.getElementById('tabDay').setAttribute('aria-
  document.getElementById('dayHead').hidden=v!=='day';document.getElementById('week').hidden=v!=='day';render();window.scrollTo(0,0);}
 function lastLoad(gk,i,before){
  for(let k=addDays(before,-1);k>=START;k=addDays(k,-1)){
-  const dw=fromKey(k).getUTCDay();
-  if(k!=='2026-10-11'&&GYM_BY_DOW[dw]===gk){const v=(loads[k]||{})['g'+i];if(v)return {v,k};}
+  if(gymKeyFor(k)===gk){const v=(loads[k]||{})['g'+i];if(v)return {v,k};}
  }
  return null;
 }
 function exRow(i,e,gk){
+ const unit=CASA[gk]?'reps':'kg';
  const key='g'+i,on=!!(state[sel]||{})[key],v=(loads[sel]||{})[key]||'',last=lastLoad(gk,i,sel);
- const lastTxt=last?`<span class="last">última: ${esc(last.v)} kg · ${fmtD(last.k)}</span>`:'';
- return `<div class="exrow"><button class="item" role="checkbox" aria-checked="${on}" data-k="${key}"><span class="box">${CHECK}</span><span class="it">${esc(e[0])}<span class="meta"><span class="mono">${esc(e[1])}</span>${e[2]?`<span>${esc(e[2])}</span>`:''}${lastTxt}</span></span></button><label class="loadwrap"><input class="load" id="load-${key}" data-l="${key}" inputmode="decimal" autocomplete="off" maxlength="10" placeholder="—" value="${esc(v)}" aria-label="Carga em ${esc(e[0])}"><span>kg</span></label></div>`;
+ const lastTxt=last?`<span class="last">última: ${esc(last.v)} ${unit} · ${fmtD(last.k)}</span>`:'';
+ return `<div class="exrow"><button class="item" role="checkbox" aria-checked="${on}" data-k="${key}"><span class="box">${CHECK}</span><span class="it">${esc(e[0])}<span class="meta"><span class="mono">${esc(e[1])}</span>${e[2]?`<span>${esc(e[2])}</span>`:''}${lastTxt}</span></span></button><label class="loadwrap"><input class="load" id="load-${key}" data-l="${key}" inputmode="decimal" autocomplete="off" maxlength="10" placeholder="—" value="${esc(v)}" aria-label="${unit==='reps'?'Reps':'Carga'} em ${esc(e[0])}"><span>${unit}</span></label></div>`;
 }
 let needRender=false;
 function render(){
  if(view==='plan'){renderPlan();return;}
  const d=fromKey(sel),dow=d.getUTCDay();
  document.getElementById('title').textContent=DOW[dow]+', '+d.getUTCDate()+' '+MON[d.getUTCMonth()];
- document.getElementById('eyebrow').textContent=(weekNum(sel)?'Semana '+weekNum(sel)+' de 10':'Largada')+(sel===TODAY?' · hoje':'');
+ document.getElementById('eyebrow').textContent='Semana '+weekNum(sel)+' de '+NWEEKS+(sel===TODAY?' · hoje':'');
  document.getElementById('todayBtn').hidden=(sel===TODAY)||TODAY<START||TODAY>END;
  document.getElementById('prev').disabled=sel<=START;
  document.getElementById('next').disabled=sel>=END;
  const p=plan(sel);
- document.getElementById('dayNote').textContent=p?(sel==='2026-10-11'?'Largada do plano. Tua maior distância até hoje: vai leve e completa.':(sel>='2026-12-14'&&dow>=1&&dow<=5?'Semana de descarga: mesma carga, metade das séries, nada até a falha. ':'')+NOTES[dow]):'';
+ document.getElementById('dayNote').textContent=p?NOTES[dow]:'';
  const st=stats(sel)||{done:0,total:0};
  const pct=st.total?Math.round(st.done/st.total*100):0;
  const bar=document.getElementById('bar');bar.firstElementChild.style.width=pct+'%';bar.classList.toggle('full',st.total&&st.done===st.total);
@@ -311,20 +319,20 @@ function render(){
  if(!p){main.innerHTML='<div class="empty">Nada planejado pra esse dia.</div>';return;}
  let h='';
  if(p.run){const [t,km,name,desc]=p.run;
-  const label=t==='leve'?'Leve':t==='longao'?'Longão':'Qualidade';
+  const label=t==='leve'?'Leve':t==='longao'?'Longão':t==='prova'?'Prova':'Qualidade';
   const nm=t==='leve'?'Corrida leve':name;
   const ds=desc||(t==='leve'?'Pace de conversa: frases inteiras sem ofegar. No fim, 4–6 acelerações de 20 s soltas.':t==='longao'?'Leve do começo ao fim. O objetivo é completar sem parar.':'Detalhe no Runna. Me manda o print que eu coloco aqui.');
-  h+=`<section><div class="sh"><h2>Corrida</h2><span class="chip ${t==='qual'?'hard':''}">${label}</span></div>
+  h+=`<section><div class="sh"><h2>Corrida</h2><span class="chip ${t==='qual'||t==='prova'?'hard':''}">${label}</span></div>
    <div class="run"><div class="km">${kmFmt(km)}<small>km</small></div><div class="rt">${esc(nm)}</div><p class="rd">${esc(ds)}</p></div>
    <div class="list">${row('run','Corrida feita','<span>Registrou no Strava e mandou o print</span>')}</div></section>`;}
  if(p.gym){const [n,tag,ex]=p.gym;
-  h+=`<section><div class="sh"><h2>${n}</h2><span class="chip">${tag}</span></div><p class="sub">5 min de bike + 2 séries leves no primeiro exercício. Anota a carga ao lado de cada exercício (por halter, quando for halter).</p><div class="list">`;
+  h+=`<section><div class="sh"><h2>${n}</h2><span class="chip">${tag}</span></div><p class="sub">${p.casa?'Mochila com livros ou garrafas como peso. 1–2 min de descanso. Anota as reps da 1ª série ao lado: semana que vem tenta passar.':'5 min de bike + 2 séries leves no primeiro exercício. Anota a carga ao lado de cada exercício (por halter, quando for halter).'}</p><div class="list">`;
   ex.forEach((e,i)=>{h+=exRow(i,e,p.gymKey);});
   h+='</div></section>';}
  if(p.bike||p.along){
   h+=`<section><div class="sh"><h2>${p.along?'Recuperação':'Cardio'}</h2><span class="chip">leve</span></div><div class="list">`;
   if(p.bike) h+=row('bike','Bike ergométrica',`<span class="mono">${p.bike}</span>`);
-  if(p.along) h+=row('along','Alongamento e estabilidade','<span class="mono">25 min</span><span>sessão do Runna</span>');
+  if(p.along) h+=row('along','Alongamento','<span class="mono">10–15 min</span><span>quadril, posterior e panturrilha</span>');
   if(p.bikeOpt) h+=row('bikeOpt','Bike leve<span class="optional">opcional</span>','<span class="mono">até 20 min</span><span>amanhã tem longão</span>');
   h+='</div></section>';}
  h+=`<section><div class="sh"><h2>Dieta</h2><span class="chip fuel">165 g proteína</span></div><div class="list">`;
