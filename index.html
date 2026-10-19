@@ -157,14 +157,14 @@ const DOWS=['D','S','T','Q','Q','S','S'];
 const MON=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 
 const RUNS={
- '2026-10-20':['leve',4],'2026-10-21':['qual',5,'800 m repetições'],'2026-10-23':['qual',4,'Repetições a cada 200 m'],'2026-10-25':['longao',6,'Treino longo'],
- '2026-10-27':['leve',5],'2026-10-28':['qual',5,'Treino de ritmo de 2 km'],'2026-10-30':['qual',5.3,'Intervalos em pirâmide'],'2026-11-01':['longao',7,'Treino longo'],
- '2026-11-03':['leve',5],'2026-11-04':['qual',5,'Metade leve, metade no ritmo'],'2026-11-06':['qual',6.2,'Progressão por distância'],'2026-11-08':['longao',8,'Treino longo'],
- '2026-11-10':['leve',5],'2026-11-11':['qual',5.1,'Treino de ritmo de 1200 m'],'2026-11-13':['qual',4.8,'600 m quebrados'],'2026-11-15':['longao',6,'Treino longo','Semana de descarga: leve e solto.'],
- '2026-11-17':['leve',6],'2026-11-18':['qual',6,'Corrida progressiva'],'2026-11-20':['qual',6,'1 km repetições'],'2026-11-22':['longao',8,'Treino longo'],
- '2026-11-24':['leve',6],'2026-11-25':['qual',7,'800 m repetições'],'2026-11-27':['qual',6,'Corrida progressiva com repetições'],'2026-11-29':['longao',10,'Treino longo','Primeira vez nos 10 km. Leve do começo ao fim.'],
- '2026-12-01':['leve',6],'2026-12-02':['qual',7,'Treino de ritmo 2-1-1'],'2026-12-04':['qual',7,'Intervalos mais curtos'],'2026-12-06':['longao',8,'Treino longo'],
- '2026-12-09':['qual',6,'Prática de ritmo para o dia da prova'],'2026-12-10':['leve',4,'','Polimento: solto e curto.'],'2026-12-13':['prova',8,'Prova de 8 km','A distância de corrida do Hyrox. Aquece 10 min trotando, larga controlado e acelera no fim.']
+ '2026-10-19':['leve',4],'2026-10-20':['qual',5,'800 m repetições'],'2026-10-22':['qual',4,'Repetições a cada 200 m'],'2026-10-24':['longao',6,'Treino longo'],
+ '2026-10-26':['leve',5],'2026-10-27':['qual',5,'Treino de ritmo de 2 km'],'2026-10-29':['qual',5.3,'Intervalos em pirâmide'],'2026-10-31':['longao',7,'Treino longo'],
+ '2026-11-02':['leve',5],'2026-11-03':['qual',5,'Metade leve, metade no ritmo'],'2026-11-05':['qual',6.2,'Progressão por distância'],'2026-11-07':['longao',8,'Treino longo'],
+ '2026-11-09':['leve',5],'2026-11-10':['qual',5.1,'Treino de ritmo de 1200 m'],'2026-11-12':['qual',4.8,'600 m quebrados'],'2026-11-14':['longao',6,'Treino longo','Semana de descarga: leve e solto.'],
+ '2026-11-16':['leve',6],'2026-11-17':['qual',6,'Corrida progressiva'],'2026-11-19':['qual',6,'1 km repetições'],'2026-11-21':['longao',8,'Treino longo'],
+ '2026-11-23':['leve',6],'2026-11-24':['qual',7,'800 m repetições'],'2026-11-26':['qual',6,'Corrida progressiva com repetições'],'2026-11-28':['longao',10,'Treino longo','Primeira vez nos 10 km. Leve do começo ao fim.'],
+ '2026-11-30':['leve',6],'2026-12-01':['qual',7,'Treino de ritmo 2-1-1'],'2026-12-03':['qual',7,'Intervalos mais curtos'],'2026-12-05':['longao',8,'Treino longo'],
+ '2026-12-08':['leve',4,'','Polimento: solto e curto.'],'2026-12-09':['qual',6,'Prática de ritmo para o dia da prova'],'2026-12-13':['prova',8,'Prova de 8 km','A distância de corrida do Hyrox. Aquece 10 min trotando, larga controlado e acelera no fim.']
 };
 
 const GYM={
@@ -234,8 +234,8 @@ function plan(k){
  const gk=gymKeyFor(k);
  if(gk){const g=GYM[gk]||CASA[gk];blocks.gym=g;blocks.gymKey=gk;blocks.casa=!!CASA[gk];g[2].forEach((_,i)=>items.push('g'+i));}
  if(GYM_ON&&(dow===1||dow===3)){blocks.bike='20–30 min leve, conversando';items.push('bike');}
- if(dow===1&&!r){blocks.along=true;items.push('along');}
- blocks.meals=meals(r&&(r[0]==='longao'||r[0]==='prova')?'long':(dow===1&&!r?'rest':'normal'));blocks.meals.forEach(m=>items.push(m[0]));
+ if(dow===0&&!r){blocks.along=true;items.push('along');}
+ blocks.meals=meals(r&&(r[0]==='longao'||r[0]==='prova')?'long':(dow===0&&!r?'rest':'normal'));blocks.meals.forEach(m=>items.push(m[0]));
  items.push('creatina','agua');
  blocks.items=items;
  return blocks;
