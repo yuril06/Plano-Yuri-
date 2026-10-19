@@ -157,14 +157,14 @@ const DOWS=['D','S','T','Q','Q','S','S'];
 const MON=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 
 const RUNS={
- '2026-10-20':['qual',4.5,'6×1 min forte','10 min leve · 6×1 min a 5:00–5:10/km com 1:30 de trote · 5 min leve. Primeira semana de volta: forte, mas sem se matar.'],'2026-10-22':['leve',4],'2026-10-25':['longao',6,'Longão'],
- '2026-10-27':['qual',5,'8×400 m','10 min leve · 8×400 m a 4:45–4:55/km com 1:30 de trote · 5 min leve.'],'2026-10-29':['leve',5],'2026-11-01':['longao',7,'Longão'],
- '2026-11-03':['qual',5.5,'4×5 min no limiar','10 min leve · 4×5 min a 5:35–5:45/km com 2 min de trote · 5 min leve. Forte, mas controlado: dá pra falar 3 ou 4 palavras.'],'2026-11-05':['leve',5],'2026-11-08':['longao',7.5,'Longão'],
- '2026-11-10':['qual',4.5,'6×1 min forte','Semana de descarga. 10 min leve · 6×1 min a 5:00–5:10/km com 1:30 de trote · 5 min leve.'],'2026-11-12':['leve',4,'','Bem solto. Domingo é o teste.'],'2026-11-15':['qual',5,'Teste de 5 km','Aquece 10 min trotando e corre 5 km no máximo. Começa controlado e acelera na segunda metade. Manda o tempo que eu recalculo os paces.'],
- '2026-11-17':['qual',7,'5×1 km','10 min leve · 5×1 km a 5:00–5:10/km com 2 min de trote · 5 min leve. É o ritmo do Hyrox e do 5 km.'],'2026-11-19':['leve',5],'2026-11-22':['longao',8,'Longão'],
- '2026-11-24':['qual',7,'3×8 min no limiar','10 min leve · 3×8 min a 5:35–5:45/km com 2 min de trote · 5 min leve.'],'2026-11-26':['leve',6],'2026-11-29':['longao',9,'Longão'],
- '2026-12-01':['qual',7,'6×800 m','10 min leve · 6×800 m a 4:55–5:05/km com 2 min de trote · 5 min leve.'],'2026-12-03':['leve',6],'2026-12-06':['longao',10,'Longão','Primeira vez nos 10 km. Leve do começo ao fim.'],
- '2026-12-08':['qual',5,'4×400 m','Polimento. 10 min leve · 4×400 m soltos e rápidos com 2 min de trote · 5 min leve.'],'2026-12-10':['leve',4,'','Bem solto. Domingo é a prova.'],'2026-12-13':['prova',5,'Prova de 5 km','Tua primeira prova. Aquece 10 min trotando. Larga controlado no 1º km, segura o ritmo e acelera no último. Data provisória: muda quando escolher a prova.']
+ '2026-10-19':['leve',4],'2026-10-20':['qual',5,'800 m repetições'],'2026-10-22':['qual',4,'Repetições a cada 200 m'],'2026-10-24':['longao',6,'Treino longo'],
+ '2026-10-26':['leve',5],'2026-10-27':['qual',5,'Treino de ritmo de 2 km'],'2026-10-29':['qual',5.3,'Intervalos em pirâmide'],'2026-10-31':['longao',7,'Treino longo'],
+ '2026-11-02':['leve',5],'2026-11-03':['qual',5,'Metade leve, metade no ritmo'],'2026-11-05':['qual',6.2,'Progressão por distância'],'2026-11-07':['longao',8,'Treino longo'],
+ '2026-11-09':['leve',5],'2026-11-10':['qual',5.1,'Treino de ritmo de 1200 m'],'2026-11-12':['qual',4.8,'600 m quebrados'],'2026-11-14':['longao',6,'Treino longo','Semana de descarga: leve e solto.'],
+ '2026-11-16':['leve',6],'2026-11-17':['qual',6,'Corrida progressiva'],'2026-11-19':['qual',6,'1 km repetições'],'2026-11-21':['longao',8,'Treino longo'],
+ '2026-11-23':['leve',6],'2026-11-24':['qual',7,'800 m repetições'],'2026-11-26':['qual',6,'Corrida progressiva com repetições'],'2026-11-28':['longao',10,'Treino longo','Primeira vez nos 10 km. Leve do começo ao fim.'],
+ '2026-11-30':['leve',6],'2026-12-01':['qual',7,'Treino de ritmo 2-1-1'],'2026-12-03':['qual',7,'Intervalos mais curtos'],'2026-12-05':['longao',8,'Treino longo'],
+ '2026-12-08':['leve',4,'','Polimento: solto e curto.'],'2026-12-09':['qual',6,'Prática de ritmo para o dia da prova'],'2026-12-13':['prova',8,'Prova de 8 km','A distância de corrida do Hyrox. Aquece 10 min trotando, larga controlado e acelera no fim.']
 };
 
 const GYM={
@@ -189,11 +189,11 @@ const NOTES={
  6:'Descanso. Alongamento e pula a refeição do acordar.'
 };
 
-function meals(dow){
+function meals(kind){
  const m=[];
- if(dow!==6) m.push(['m1','Ao acordar','',dow===0?'1 tapioca com mel + 1 banana':'1 banana com mel, ou 1 tapioca pequena com mel','30–45 min antes de treinar']);
+ if(kind!=='rest') m.push(['m1','Ao acordar','',kind==='long'?'1 tapioca com mel + 1 banana':'1 banana com mel, ou 1 tapioca pequena com mel','30–45 min antes de treinar']);
  m.push(['m2','Pós-treino','35 g','2 ovos mexidos + 1 tapioca média ou 1 pão + 1 copo de leite batido com 30 g de leite em pó + 40 g de aveia com banana ou mamão','']);
- m.push(['m3','Almoço','40 g',(dow===0?'200':'150')+' g de arroz cozido + 1 concha de feijão + salada + fio de azeite + proteína','<b>150 g</b> de frango, carne moída ou bife · ou <b>100 g + 2 ovos</b>']);
+ m.push(['m3','Almoço','40 g',(kind==='long'?'200':'150')+' g de arroz cozido + 1 concha de feijão + salada + fio de azeite + proteína','<b>150 g</b> de frango, carne moída ou bife · ou <b>100 g + 2 ovos</b>']);
  m.push(['m4','Café da tarde','25 g','1 copo de leite + 1 tapioca com 2 fatias de queijo + 1 fruta','Sem queijo: <b>2 ovos</b> na tapioca']);
  m.push(['m5','Jantar','35 g','125 g de arroz cozido, ou 150 g de macarrão cozido, ou 200 g de batata ou mandioca + legumes + proteína','<b>120–150 g</b> de frango, carne moída ou bife · ou <b>100 g + 1 ovo</b>']);
  m.push(['m6','Ceia','20 g','1 copo de leite batido com 30 g de leite em pó + 40 g de aveia + 1 fruta','Ou: <b>3 ovos mexidos</b> + 1 fruta']);
@@ -234,8 +234,8 @@ function plan(k){
  const gk=gymKeyFor(k);
  if(gk){const g=GYM[gk]||CASA[gk];blocks.gym=g;blocks.gymKey=gk;blocks.casa=!!CASA[gk];g[2].forEach((_,i)=>items.push('g'+i));}
  if(GYM_ON&&(dow===1||dow===3)){blocks.bike='20–30 min leve, conversando';items.push('bike');}
- if(dow===6){blocks.along=true;items.push('along');}
- blocks.meals=meals(dow);blocks.meals.forEach(m=>items.push(m[0]));
+ if(dow===0&&!r){blocks.along=true;items.push('along');}
+ blocks.meals=meals(r&&(r[0]==='longao'||r[0]==='prova')?'long':(dow===0&&!r?'rest':'normal'));blocks.meals.forEach(m=>items.push(m[0]));
  items.push('creatina','agua');
  blocks.items=items;
  return blocks;
@@ -263,7 +263,7 @@ function renderPlan(){
  });
  const pc=(a,b)=>b?Math.round(a/b*100):0;
  const curW=TODAY<START?0:TODAY>END?NWEEKS:weekNum(TODAY);
- let h=`<header><span class="eyebrow">Fase 1 · rumo aos 5 km · 19 out a 13 dez</span><h1>${curW?'Semana '+curW+' de '+NWEEKS:'Começa 19 out'}</h1><p class="note">${kmFmt(Math.round(kmD*10)/10)} de ${kmFmt(Math.round(kmT*10)/10)} km corridos. Toca numa semana pra abrir os dias.</p></header>`;
+ let h=`<header><span class="eyebrow">Fase 1 · plano Runna · prova de 8 km em 13 dez</span><h1>${curW?'Semana '+curW+' de '+NWEEKS:'Começa 19 out'}</h1><p class="note">${kmFmt(Math.round(kmD*10)/10)} de ${kmFmt(Math.round(kmT*10)/10)} km corridos. Toca numa semana pra abrir os dias.</p></header>`;
  h+=`<div class="stats">
   <div class="stat"><span class="v">${runD}<small>/ ${runT}</small></span><span class="l">corridas feitas</span><div class="bar"><i style="width:${pc(runD,runT)}%"></i></div></div>
   <div class="stat"><span class="v">${gymD}<small>/ ${gymT}</small></span><span class="l">treinos de academia (quando voltar)</span><div class="bar"><i style="width:${pc(gymD,gymT)}%"></i></div></div>
@@ -294,6 +294,18 @@ function exRow(i,e,gk){
  return `<div class="exrow"><button class="item" role="checkbox" aria-checked="${on}" data-k="${key}"><span class="box">${CHECK}</span><span class="it">${esc(e[0])}<span class="meta"><span class="mono">${esc(e[1])}</span>${e[2]?`<span>${esc(e[2])}</span>`:''}${lastTxt}</span></span></button><label class="loadwrap"><input class="load" id="load-${key}" data-l="${key}" inputmode="decimal" autocomplete="off" maxlength="10" placeholder="—" value="${esc(v)}" aria-label="${unit==='reps'?'Reps':'Carga'} em ${esc(e[0])}"><span>${unit}</span></label></div>`;
 }
 let needRender=false;
+function dayNote(k,p){
+ const r=p.run,nx=RUNS[addDays(k,1)];
+ if(r){
+  if(r[0]==='leve') return 'Corrida leve, ritmo de conversa. É pra somar volume, não pra cansar.';
+  if(r[0]==='qual') return 'Dia de qualidade. Aquece bem e segue o Runna. Se a perna estiver muito pesada, faz leve.';
+  if(r[0]==='longao') return 'Longão. Leve do começo ao fim: completar sem parar é o objetivo.';
+  return 'Dia de prova! Come leve 2 h antes e aquece trotando.';
+ }
+ if(nx&&nx[0]==='longao') return 'Sem corrida hoje. Amanhã tem longão.';
+ if(p.along) return 'Descanso. Alongamento e pula a refeição do acordar.';
+ return 'Sem corrida hoje. Se quiser treinar força, faz o que tiver à mão.';
+}
 function render(){
  if(view==='plan'){renderPlan();return;}
  const d=fromKey(sel),dow=d.getUTCDay();
@@ -303,7 +315,7 @@ function render(){
  document.getElementById('prev').disabled=sel<=START;
  document.getElementById('next').disabled=sel>=END;
  const p=plan(sel);
- document.getElementById('dayNote').textContent=p?NOTES[dow]:'';
+ document.getElementById('dayNote').textContent=p?dayNote(sel,p):'';
  const st=stats(sel)||{done:0,total:0};
  const pct=st.total?Math.round(st.done/st.total*100):0;
  const bar=document.getElementById('bar');bar.firstElementChild.style.width=pct+'%';bar.classList.toggle('full',st.total&&st.done===st.total);
@@ -322,7 +334,7 @@ function render(){
  if(p.run){const [t,km,name,desc]=p.run;
   const label=t==='leve'?'Leve':t==='longao'?'Longão':t==='prova'?'Prova':'Qualidade';
   const nm=t==='leve'?'Corrida leve':name;
-  const ds=desc||(t==='leve'?'Pace de conversa: frases inteiras sem ofegar. No fim, 4–6 acelerações de 20 s soltas.':t==='longao'?'Leve do começo ao fim. O objetivo é completar sem parar.':'Detalhe no Runna. Me manda o print que eu coloco aqui.');
+  const ds=desc||(t==='leve'?'Pace de conversa: frases inteiras sem ofegar. No fim, 4–6 acelerações de 20 s soltas.':t==='longao'?'Leve do começo ao fim. O objetivo é completar sem parar.':'Detalhe e paces no Runna: segue o áudio no fone.');
   h+=`<section><div class="sh"><h2>Corrida</h2><span class="chip ${t==='qual'||t==='prova'?'hard':''}">${label}</span></div>
    <div class="run"><div class="km">${kmFmt(km)}<small>km</small></div><div class="rt">${esc(nm)}</div><p class="rd">${esc(ds)}</p></div>
    <div class="list">${row('run','Corrida feita','<span>Registrou no Strava e mandou o print</span>')}</div></section>`;}
