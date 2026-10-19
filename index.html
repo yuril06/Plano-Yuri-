@@ -181,11 +181,11 @@ const CASA={
 };
 const NOTES={
  0:'Longão. Leve do começo ao fim: ritmo de conversa.',
- 1:'Treino em casa. Sem corrida hoje.',
+ 1:'Sem corrida hoje. Se quiser treinar força, faz o que tiver à mão.',
  2:'Dia de qualidade na corrida. Aquece bem e respeita os trotes.',
- 3:'Treino em casa. Sem corrida hoje.',
+ 3:'Sem corrida hoje. Se quiser treinar força, faz o que tiver à mão.',
  4:'Corrida leve, ritmo de conversa. No fim, 4–6 acelerações de 20 s.',
- 5:'Treino em casa. Amanhã é descanso.',
+ 5:'Sem corrida hoje. Domingo tem longão.',
  6:'Descanso. Alongamento e pula a refeição do acordar.'
 };
 
@@ -219,6 +219,7 @@ try{loads=JSON.parse(localStorage.getItem('hoje-loads')||'{}')||{};}catch(e){loa
 function gymKeyFor(k){
  const dow=fromKey(k).getUTCDay();
  if(GYM_ON) return GYM_BY_DOW[dow]||null;
+ return null;
  if(dow!==1&&dow!==3&&dow!==5) return null;
  const odd=weekNum(k)%2===1;
  return (dow===3)===odd?'casaB':'casaA';
@@ -265,7 +266,7 @@ function renderPlan(){
  let h=`<header><span class="eyebrow">Fase 1 · rumo aos 5 km · 19 out a 13 dez</span><h1>${curW?'Semana '+curW+' de '+NWEEKS:'Começa 19 out'}</h1><p class="note">${kmFmt(Math.round(kmD*10)/10)} de ${kmFmt(Math.round(kmT*10)/10)} km corridos. Toca numa semana pra abrir os dias.</p></header>`;
  h+=`<div class="stats">
   <div class="stat"><span class="v">${runD}<small>/ ${runT}</small></span><span class="l">corridas feitas</span><div class="bar"><i style="width:${pc(runD,runT)}%"></i></div></div>
-  <div class="stat"><span class="v">${gymD}<small>/ ${gymT}</small></span><span class="l">treinos de força completos</span><div class="bar"><i style="width:${pc(gymD,gymT)}%"></i></div></div>
+  <div class="stat"><span class="v">${gymD}<small>/ ${gymT}</small></span><span class="l">treinos de academia (quando voltar)</span><div class="bar"><i style="width:${pc(gymD,gymT)}%"></i></div></div>
   <div class="stat"><span class="v">${pc(mealD,mealT)}<small>%</small></span><span class="l">refeições cumpridas até hoje</span><div class="bar"><i style="width:${pc(mealD,mealT)}%"></i></div></div>
   <div class="stat"><span class="v">${full}<small>/ ${past}</small></span><span class="l">dias 100% até hoje</span><div class="bar"><i style="width:${pc(full,past)}%"></i></div></div>
  </div>`;
