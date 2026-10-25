@@ -234,21 +234,21 @@ footer{display:flex;justify-content:center}
 
 <script>
 (function(){
-const START='2026-10-25', END='2026-12-20', WEEK0='2026-10-26';
+const START='2026-10-26', END='2026-12-19', WEEK0='2026-10-26';
 const GYM_ON=false; // muda pra true quando voltar pra academia
 const DOW=['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
 const DOWS=['D','S','T','Q','Q','S','S'];
 const MON=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 
 const RUNS={
- '2026-10-25':['leve',4],'2026-10-27':['qual',5,'800 m repetições'],'2026-10-29':['qual',4,'Repetições a cada 200 m'],'2026-10-31':['longao',6],
- '2026-11-02':['leve',5],'2026-11-03':['qual',5,'Treino de ritmo de 2 km'],'2026-11-05':['qual',5.3,'Intervalos em pirâmide'],'2026-11-07':['longao',7],
- '2026-11-09':['leve',5],'2026-11-10':['qual',5,'Metade leve, metade no ritmo'],'2026-11-12':['qual',6.2,'Progressão por distância'],'2026-11-14':['longao',8],
- '2026-11-16':['leve',5],'2026-11-17':['qual',5.1,'Treino de ritmo de 1200 m'],'2026-11-19':['qual',4.8,'600 m quebrados'],'2026-11-21':['longao',6,'','Semana de descarga: leve e solto.'],
- '2026-11-23':['leve',6],'2026-11-24':['qual',6,'Corrida progressiva'],'2026-11-26':['qual',6,'1 km repetições'],'2026-11-28':['longao',8],
- '2026-11-30':['leve',6],'2026-12-01':['qual',7,'800 m repetições'],'2026-12-03':['qual',6,'Corrida progressiva com repetições'],'2026-12-05':['longao',10,'','Primeira vez nos 10 km. Leve do começo ao fim, sem olhar o pace.'],
- '2026-12-07':['leve',6],'2026-12-08':['qual',7,'Treino de ritmo 2-1-1'],'2026-12-10':['qual',7,'Intervalos mais curtos'],'2026-12-12':['longao',8],
- '2026-12-15':['leve',4,'','Polimento: solto e curto.'],'2026-12-16':['qual',6,'Prática de ritmo para o dia da prova'],'2026-12-20':['prova',8,'Prova de 8 km','A distância de corrida do Hyrox. Aquece 10 min trotando, larga controlado e acelera no fim.']
+ '2026-10-26':['leve',4],'2026-10-27':['qual',5,'Treino de ritmo 2-1'],'2026-10-29':['qual',4,'Drop set'],'2026-10-31':['longao',6],
+ '2026-11-02':['leve',5],'2026-11-03':['qual',5,'500 m no seu máximo'],'2026-11-05':['qual',5,'Repetições a cada 1,5 km'],'2026-11-07':['longao',7],
+ '2026-11-09':['leve',5],'2026-11-10':['qual',5.2,'Repetições por distância'],'2026-11-12':['qual',6,'Treino de ritmo de 3 km'],'2026-11-14':['longao',8],
+ '2026-11-16':['leve',5],'2026-11-17':['qual',5.1,'Drop set com repetições'],'2026-11-19':['qual',5,'500 m contínuos'],'2026-11-21':['longao',6,'','Semana de descarga: leve e solto.'],
+ '2026-11-23':['leve',6],'2026-11-24':['qual',6.2,'400 m repetições'],'2026-11-26':['qual',6.2,'Treino intervalado de 400 m'],'2026-11-28':['longao',8],
+ '2026-11-30':['leve',6],'2026-12-01':['qual',7,'Treino intervalado por km'],'2026-12-03':['qual',5.9,'Repetições curtas com drop set'],'2026-12-05':['longao',10,'','Primeira vez nos 10 km. Leve do começo ao fim, sem olhar o pace.'],
+ '2026-12-07':['leve',6],'2026-12-08':['qual',7.3,'Quebras por distância'],'2026-12-10':['qual',7,'Repetições a cada 200 m'],'2026-12-12':['longao',8],
+ '2026-12-15':['qual',6,'Prática de ritmo para o dia da prova'],'2026-12-16':['leve',4,'','Polimento: solto e curto.'],'2026-12-19':['prova',8,'Prova de 8 km','A distância de corrida do Hyrox. Aquece 10 min trotando, larga controlado e acelera no fim.']
 };
 
 const GYM={
@@ -322,7 +322,7 @@ const pc=(a,b)=>b?Math.round(a/b*100):0;
 const r1=n=>Math.round(n*10)/10;
 
 const GOALS=[
- ['2026-12-20','Prova de 8 km','Fim do plano Runna',false],
+ ['2026-12-19','Prova de 8 km','Fim do plano Runna',false],
  ['2027-03-28','New Balance 15K SP','15 km · Pacaembu · data prevista',true],
  ['2027-05-08','HYROX São Paulo','8 × 1 km + 8 estações · 8 ou 9 mai',false],
  ['2027-07-25','Meia da Nike · SP City','21 km · data prevista',true]
@@ -338,7 +338,7 @@ function renderPlan(){
  });
  const curW=TODAY<START?0:TODAY>END?NWEEKS:weekNum(TODAY);
  const daysLeft=Math.max(0,Math.round((fromKey(END)-fromKey(TODAY))/864e5));
- let h=`<div class="phead"><span class="lbl">Prova de 8 km · 20 dez · faltam ${daysLeft} dias</span>
+ let h=`<div class="phead"><span class="lbl">Prova de 8 km · 19 dez · faltam ${daysLeft} dias</span>
   <div class="big">${kmFmt(r1(kmD))}<small>/ ${kmFmt(r1(kmT))} km</small></div>
   <div class="lane"><i style="width:${pc(kmD,kmT)}%"></i></div></div>`;
  const nextG=GOALS.find(g=>g[0]>=TODAY);
