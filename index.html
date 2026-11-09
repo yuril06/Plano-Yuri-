@@ -153,6 +153,7 @@ details[open] summary::after{content:' –'}
 .tog[aria-checked="true"]{border-color:color-mix(in srgb,var(--ok) 45%,var(--line))}
 
 /* gym (when it comes back) */
+.gnote{margin:0;color:var(--muted);font-size:13.5px;max-width:52ch}
 .lift{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:2px 14px}
 .exrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:start;border-top:1px solid var(--line)}
 .lift .exrow:first-child{border-top:0}
@@ -234,21 +235,21 @@ footer{display:flex;justify-content:center}
 
 <script>
 (function(){
-const START='2026-11-05', END='2026-12-27', WEEK0='2026-11-02';
-const GYM_ON=false; // muda pra true quando voltar pra academia
+const START='2026-11-09', END='2027-01-02', WEEK0='2026-11-09';
+const GYM_ON=true; // muda pra true quando voltar pra academia
 const DOW=['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
 const DOWS=['D','S','T','Q','Q','S','S'];
 const MON=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 
 const RUNS={
- '2026-11-05':['leve',4],'2026-11-06':['qual',5,'1 km repetições'],'2026-11-07':['qual',4,'500 m contínuos'],'2026-11-08':['longao',6],
- '2026-11-09':['leve',5],'2026-11-10':['qual',5,'Treino de ritmo'],'2026-11-12':['qual',5.1,'Intervalos'],'2026-11-14':['longao',7],
- '2026-11-16':['leve',5],'2026-11-17':['qual',5,'Repetições a cada 200 m'],'2026-11-19':['qual',6,'600 m divididos em 200 m'],'2026-11-21':['longao',8],
- '2026-11-23':['leve',5],'2026-11-24':['qual',5,'Treino de ritmo'],'2026-11-26':['qual',5,'Intervalos'],'2026-11-28':['longao',6,'','Semana de descarga: leve e solto.'],
- '2026-11-30':['leve',6],'2026-12-01':['qual',6,'Treino de ritmo de 2 km'],'2026-12-03':['qual',6.2,'400 m repetições'],'2026-12-05':['longao',8],
- '2026-12-07':['leve',6],'2026-12-08':['qual',7,'Drop down'],'2026-12-10':['qual',6,'Treino intervalado por km'],'2026-12-12':['longao',10,'','Primeira vez nos 10 km. Leve do começo ao fim, sem olhar o pace.'],
- '2026-12-14':['leve',6],'2026-12-15':['qual',7,'Treino de ritmo 2-1-1'],'2026-12-17':['qual',7,'Intervalos em pirâmide'],'2026-12-19':['longao',8],
- '2026-12-22':['leve',4,'','Polimento: solto e curto.'],'2026-12-23':['qual',6,'Prática de ritmo para o dia da prova'],'2026-12-27':['prova',8,'Prova de 8 km','A distância de corrida do Hyrox. Aquece 10 min trotando, larga controlado e acelera no fim.']
+ '2026-11-09':['leve',4],'2026-11-10':['qual',5,'1 km repetições'],'2026-11-12':['qual',4,'Tiros de 300 m'],'2026-11-14':['longao',6],
+ '2026-11-16':['leve',5],'2026-11-17':['qual',5,'Treino intervalado por km'],'2026-11-19':['qual',5,'Série em pirâmide'],'2026-11-21':['longao',7],
+ '2026-11-23':['leve',5],'2026-11-24':['qual',5,'Repetições a cada 1,5 km'],'2026-11-26':['qual',5.9,'200 m repetições'],'2026-11-28':['longao',8],
+ '2026-11-30':['leve',5],'2026-12-01':['qual',5,'500 m contínuos'],'2026-12-03':['qual',5,'400 m repetições'],'2026-12-05':['longao',6,'','Semana de descarga: leve e solto.'],
+ '2026-12-07':['leve',6],'2026-12-08':['qual',6,'Treino de ritmo 2-1-1'],'2026-12-10':['qual',6,'Drop down'],'2026-12-12':['longao',8],
+ '2026-12-14':['leve',6],'2026-12-15':['qual',7,'Drop set com repetições'],'2026-12-17':['qual',6,'Treino intervalado de 1 km'],'2026-12-19':['longao',10,'','Primeira vez nos 10 km. Leve do começo ao fim, sem olhar o pace.'],
+ '2026-12-21':['leve',6],'2026-12-22':['qual',7,'Corrida progressiva'],'2026-12-24':['qual',7.1,'Intervalos de 200 m'],'2026-12-26':['longao',8],
+ '2026-12-29':['qual',6,'Prática de ritmo para o dia da prova'],'2026-12-30':['leve',4,'','Polimento: solto e curto.'],'2027-01-02':['prova',8,'Prova de 8 km','A distância de corrida do Hyrox. Aquece 10 min trotando, larga controlado e acelera no fim.']
 };
 
 const GYM={
@@ -258,7 +259,7 @@ const GYM={
  infA:['Inferior A','força',[['Agachamento livre','4×5 · RIR 2','75 kg'],['Stiff','3×6–8 · RIR 2','60 kg'],['Búlgaro com halteres','3×8 cada perna','2×12 kg · esquerda primeiro'],['Panturrilha em pé','4×10–12','pausa 1 s embaixo'],['Roda abdominal','3×8–10','']]],
  supB:['Superior B','hipertrofia',[['Supino inclinado com halteres','4×8–12','22–24 kg'],['Puxada pegada neutra','4×8–12',''],['Remada unilateral','3×10–12 cada','26–30 kg'],['Desenvolvimento com halteres','3×10–12','16–18 kg'],['Elevação lateral','4×12–15',''],['Crossover','4×12–15','aperta 1 s no final'],['Martelo + tríceps corda','3×12 · bi-set',''],['Farmer walk','3×40 m','halteres pesados']]]
 };
-const GYM_BY_DOW={1:'supA',2:'infB',3:'braco',4:'infA',5:'supB'};
+const GYM_BY_DOW={1:'supA',2:'infA',3:'braco',4:'infB',5:'supB'}; // perna nos dias de corrida forte; sexta só superior (sábado tem longão)
 const CASA={
  casaA:['Casa A','empurrar e pernas',[['Flexão de braço','4×máx · para 1–2 antes da falha',''],['Flexão com pés elevados','3×10–15','pés no sofá ou cadeira'],['Mergulho entre cadeiras','3×10–15','tríceps'],['Pike push-up','3×8–12','ombro'],['Búlgaro com mochila','3×10–12 cada perna','pé de trás no sofá · esquerda primeiro'],['Agachamento com mochila','3×15–20','desce devagar, 3 s'],['Prancha','3×45 s','']]],
  casaB:['Casa B','puxar e posterior',[['Barra fixa','4×máx','praça ou barra de porta · sem barra: remada invertida na mesa 4×10–15'],['Remada curvada com mochila','3×12–15','aperta as escápulas'],['Stiff unilateral com mochila','3×10 cada perna','esquerda primeiro'],['Ponte de glúteo unilateral','3×12 cada perna',''],['Rosca com mochila ou galão','3×12–15',''],['Elevação lateral com garrafas','3×15–20','galão de 5 L ou garrafas de água'],['Panturrilha unilateral no degrau','3×15 cada','']]]
@@ -268,9 +269,9 @@ function meals(kind){
  const m=[];
  if(kind!=='rest') m.push(['m1','Ao acordar','',kind==='long'?'1 tapioca com mel + 1 banana':'1 banana com mel, ou 1 tapioca pequena com mel','30–45 min antes de treinar']);
  m.push(['m2','Pós-treino','35 g','2 ovos mexidos + 1 tapioca média ou 1 pão + 1 copo de leite batido com 30 g de leite em pó + 40 g de aveia com banana ou mamão','']);
- m.push(['m3','Almoço','40 g',(kind==='long'?'200':'150')+' g de arroz cozido + 1 concha de feijão + salada + fio de azeite + proteína','<b>150 g</b> de frango, carne moída ou bife · ou <b>100 g + 2 ovos</b>']);
+ m.push(['m3','Almoço','40 g',(kind==='long'||kind==='gym'?'200':'150')+' g de arroz cozido + 1 concha de feijão + salada + fio de azeite + proteína','<b>150 g</b> de frango, carne moída ou bife · ou <b>100 g + 2 ovos</b>']);
  m.push(['m4','Café da tarde','25 g','1 copo de leite + 1 tapioca com 2 fatias de queijo + 1 fruta','Sem queijo: <b>2 ovos</b> na tapioca']);
- m.push(['m5','Jantar','35 g','125 g de arroz cozido, ou 150 g de macarrão cozido, ou 200 g de batata ou mandioca + legumes + proteína','<b>120–150 g</b> de frango, carne moída ou bife · ou <b>100 g + 1 ovo</b>']);
+ m.push(['m5','Jantar','35 g',(kind==='gym'?'175 g de arroz cozido, ou 200 g de macarrão cozido, ou 300 g de batata ou mandioca':'125 g de arroz cozido, ou 150 g de macarrão cozido, ou 200 g de batata ou mandioca')+' + legumes + proteína','<b>120–150 g</b> de frango, carne moída ou bife · ou <b>100 g + 1 ovo</b>']);
  m.push(['m6','Ceia','20 g','1 copo de leite batido com 30 g de leite em pó + 40 g de aveia + 1 fruta','Ou: <b>3 ovos mexidos</b> + 1 fruta']);
  return m;
 }
@@ -302,9 +303,8 @@ function plan(k){
  if(r){blocks.run=r;items.push('run');}
  const gk=gymKeyFor(k);
  if(gk){const g=GYM[gk]||CASA[gk];blocks.gym=g;blocks.gymKey=gk;blocks.casa=!!CASA[gk];g[2].forEach((_,i)=>items.push('g'+i));}
- if(GYM_ON&&(dow===1||dow===3)){blocks.bike='20–30 min leve';items.push('bike');}
  if(dow===0&&!r){blocks.along=true;items.push('along');}
- blocks.meals=meals(r&&(r[0]==='longao'||r[0]==='prova')?'long':(dow===0&&!r?'rest':'normal'));blocks.meals.forEach(m=>items.push(m[0]));
+ blocks.meals=meals(r&&(r[0]==='longao'||r[0]==='prova')?'long':(dow===0&&!r?'rest':(gk?'gym':'normal')));blocks.meals.forEach(m=>items.push(m[0]));
  items.push('creatina','agua');
  blocks.items=items;
  return blocks;
@@ -322,7 +322,7 @@ const pc=(a,b)=>b?Math.round(a/b*100):0;
 const r1=n=>Math.round(n*10)/10;
 
 const GOALS=[
- ['2026-12-27','Prova de 8 km','Fim do plano Runna',false],
+ ['2027-01-02','Prova de 8 km','Fim do plano Runna',false],
  ['2027-03-28','New Balance 15K SP','15 km · Pacaembu · data prevista',true],
  ['2027-05-08','HYROX São Paulo','8 × 1 km + 8 estações · 8 ou 9 mai',false],
  ['2027-07-25','Meia da Nike · SP City','21 km · plano Runna de 4 abr a 25 jul',false]
@@ -338,7 +338,7 @@ function renderPlan(){
  });
  const curW=TODAY<START?0:TODAY>END?NWEEKS:weekNum(TODAY);
  const daysLeft=Math.max(0,Math.round((fromKey(END)-fromKey(TODAY))/864e5));
- let h=`<div class="phead"><span class="lbl">Prova de 8 km · 27 dez · faltam ${daysLeft} dias</span>
+ let h=`<div class="phead"><span class="lbl">Prova de 8 km · 2 jan · faltam ${daysLeft} dias</span>
   <div class="big">${kmFmt(r1(kmD))}<small>/ ${kmFmt(r1(kmT))} km</small></div>
   <div class="lane"><i style="width:${pc(kmD,kmT)}%"></i></div></div>`;
  const nextG=GOALS.find(g=>g[0]>=TODAY);
@@ -420,7 +420,7 @@ function render(){
  if(!p){main.innerHTML='<div class="empty">Nada planejado pra esse dia.</div>';return;}
  let h=hero(sel,p);
  if(p.gym){const [n,tag,ex]=p.gym;
-  h+=`<section><div class="sh"><h3>${n}</h3><span class="aside">${tag}</span></div><div class="lift">`;
+  h+=`<section><div class="sh"><h3>${n}</h3><span class="aside">${tag}</span></div>${p.run?`<p class="gnote">${p.run[0]==='qual'?'Perna no mesmo dia do treino forte, assim os dias leves ficam leves. ':''}Corre primeiro e faz a academia depois, de preferência com umas 6 h de intervalo.</p>`:''}<div class="lift">`;
   ex.forEach((e,i)=>{h+=exRow(i,e,p.gymKey);});
   if(p.bike) h+=`<div class="exrow"><button class="item ex" role="checkbox" aria-checked="${isOn('bike')}" data-k="bike">${BOX}<span class="it"><span class="t">Bike ergométrica</span><span class="d">${p.bike}</span></span></button></div>`;
   h+='</div></section>';}
