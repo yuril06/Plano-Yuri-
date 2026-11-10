@@ -242,7 +242,7 @@ const DOWS=['D','S','T','Q','Q','S','S'];
 const MON=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 
 const RUNS={
- '2026-11-09':['leve',4],'2026-11-10':['qual',5,'1 km repetições'],'2026-11-12':['qual',4,'Tiros de 300 m'],'2026-11-14':['longao',6],
+ '2026-11-09':['leve',4],'2026-11-11':['qual',5,'1 km repetições'],'2026-11-13':['qual',4,'Tiros de 300 m'],'2026-11-15':['longao',6],
  '2026-11-16':['leve',5],'2026-11-17':['qual',5,'Treino intervalado por km'],'2026-11-19':['qual',5,'Série em pirâmide'],'2026-11-21':['longao',7],
  '2026-11-23':['leve',5],'2026-11-24':['qual',5,'Repetições a cada 1,5 km'],'2026-11-26':['qual',5.9,'200 m repetições'],'2026-11-28':['longao',8],
  '2026-11-30':['leve',5],'2026-12-01':['qual',5,'500 m contínuos'],'2026-12-03':['qual',5,'400 m repetições'],'2026-12-05':['longao',6,'','Semana de descarga: leve e solto.'],
@@ -294,7 +294,9 @@ let state={},loads={};
 try{state=JSON.parse(localStorage.getItem('hoje-checks')||'{}')||{};}catch(e){state={};}
 try{loads=JSON.parse(localStorage.getItem('hoje-loads')||'{}')||{};}catch(e){loads={};}
 
-function gymKeyFor(k){const dow=fromKey(k).getUTCDay();return GYM_ON?(GYM_BY_DOW[dow]||null):null;}
+// ajustes pontuais de academia por data (null = sem academia)
+const GYM_OVERRIDE={'2026-11-10':null,'2026-11-11':'infA','2026-11-12':'braco','2026-11-13':'infB','2026-11-14':'supB','2026-11-15':null};
+function gymKeyFor(k){if(!GYM_ON)return null;if(k in GYM_OVERRIDE)return GYM_OVERRIDE[k];const dow=fromKey(k).getUTCDay();return GYM_BY_DOW[dow]||null;}
 function plan(k){
  if(k<START||k>END) return null;
  const dow=fromKey(k).getUTCDay();
