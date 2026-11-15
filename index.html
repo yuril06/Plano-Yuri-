@@ -295,7 +295,7 @@ try{state=JSON.parse(localStorage.getItem('hoje-checks')||'{}')||{};}catch(e){st
 try{loads=JSON.parse(localStorage.getItem('hoje-loads')||'{}')||{};}catch(e){loads={};}
 
 // ajustes pontuais de academia por data (null = sem academia)
-const GYM_OVERRIDE={'2026-11-10':null,'2026-11-11':'infA','2026-11-12':'braco','2026-11-13':'infB','2026-11-14':null,'2026-11-15':null,'2026-11-16':'infA','2026-11-17':'supB','2026-11-18':'infB','2026-11-19':'braco','2026-11-20':null};
+const GYM_OVERRIDE={'2026-11-10':null,'2026-11-11':'infA','2026-11-12':'braco','2026-11-13':'infB','2026-11-14':null,'2026-11-15':null,'2026-11-16':'supA','2026-11-17':'infA','2026-11-18':'supB','2026-11-19':'infB','2026-11-20':null};
 function gymKeyFor(k){if(!GYM_ON)return null;if(k in GYM_OVERRIDE)return GYM_OVERRIDE[k];const dow=fromKey(k).getUTCDay();return GYM_BY_DOW[dow]||null;}
 function plan(k){
  if(k<START||k>END) return null;
