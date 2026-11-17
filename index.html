@@ -271,6 +271,7 @@ const GYM={
  supB:['Superior B','hipertrofia',[['Supino inclinado com halteres','4×8–12','22–24 kg'],['Puxada pegada neutra','4×8–12',''],['Remada unilateral','3×10–12 cada','26–30 kg'],['Desenvolvimento com halteres','3×10–12','16–18 kg'],['Elevação lateral','4×12–15',''],['Crossover','4×12–15','aperta 1 s no final'],['Martelo + tríceps corda','3×12 · bi-set',''],['Farmer walk','3×40 m','halteres pesados']]]
 };
 const GYM_NEW_FROM='2026-11-17';
+const BIKE={'2026-11-17':'20–30 min · sem carga, só pra soltar a perna'}; // cardio extra por data
 const CORE_DOW=[2,4,6]; // core: dias de perna (ter, qui) + sábado
 const GYM_OLD={
  infA:['Inferior A','força',[['Agachamento livre','4×5 · RIR 2','75 kg'],['Stiff','3×6–8 · RIR 2','60 kg'],['Búlgaro com halteres','3×8 cada perna','2×12 kg · esquerda primeiro'],['Panturrilha em pé','4×10–12','pausa 1 s embaixo'],['Roda abdominal','3×8–10','']]],
@@ -324,6 +325,7 @@ function plan(k){
  const gk=gymKeyFor(k);
  if(gk){const g=gymDef(k,gk);blocks.gym=g;blocks.gymKey=gk;blocks.casa=!!CASA[gk];g[2].forEach((_,i)=>items.push('g'+i));}
  if(CORE_DOW.includes(dow)&&k>=GYM_NEW_FROM){blocks.core=true;items.push('core');}
+ if(BIKE[k]){blocks.bike=BIKE[k];items.push('bike');}
  if(dow===0&&!r){blocks.along=true;items.push('along');}
  blocks.meals=meals(r&&(r[0]==='longao'||r[0]==='prova')?'long':(dow===0&&!r?'rest':(gk?'gym':'normal')));blocks.meals.forEach(m=>items.push(m[0]));
  items.push('creatina','agua');
@@ -507,6 +509,7 @@ function render(){
   ex.forEach((e,i)=>{h+=exRow(i,e,p.gymKey);});
   if(p.bike) h+=`<div class="exrow"><button class="item ex" role="checkbox" aria-checked="${isOn('bike')}" data-k="bike">${BOX}<span class="it"><span class="t">Bike ergométrica</span><span class="d">${p.bike}</span></span></button></div>`;
   h+='</div></section>';}
+ if(p.bike&&!p.gym){h+=`<section><div class="sh"><h3>Cardio</h3><span class="aside">leve</span></div><div class="lift"><div class="exrow"><button class="item ex" role="checkbox" aria-checked="${isOn('bike')}" data-k="bike">${BOX}<span class="it"><span class="t">Bike ergométrica</span><span class="d">${p.bike}</span></span></button></div></div></section>`;}
  if(p.core){h+=`<section><div class="sh"><h3>Core</h3><span class="aside">3 exercícios</span></div><div class="lift"><div class="exrow"><button class="item ex" role="checkbox" aria-checked="${isOn('core')}" data-k="core">${BOX}<span class="it"><span class="t">Treino de core</span><span class="d">${p.gym?'depois da academia':'sem academia hoje · em casa ou na academia'}</span></span></button></div></div></section>`;}
  const pDone=p.meals.reduce((a,m)=>a+(isOn(m[0])&&m[2]?parseInt(m[2]):0),0),pTot=p.meals.reduce((a,m)=>a+(m[2]?parseInt(m[2]):0),0);
  h+=`<section><div class="sh"><h3>Combustível</h3><span class="aside"><b>${pDone}</b> / ${pTot} g proteína</span></div><div class="fuel">`;
