@@ -211,6 +211,14 @@ footer{display:flex;justify-content:center}
 .goal .gl{font-family:var(--mono);font-size:11.5px;color:var(--muted);text-align:right;white-space:nowrap}
 .goal.next .gd b,.goal.next .gl{color:var(--accent)}
 .goal.done{opacity:.45}
+.xport{display:flex;flex-direction:column;gap:10px}
+.xsel{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;border-radius:14px;background:var(--surface);border:1px solid var(--line)}
+.xsel select{font:600 14px var(--body);color:var(--ink);background:var(--raise);border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-height:40px}
+.xrow{display:flex;gap:8px}
+.xbtn{flex:1;min-height:48px;padding:0 16px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:700 14px var(--body);cursor:pointer;transition:transform .12s}
+.xbtn:active{transform:scale(.98)}
+.xbtn.main{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+.xpre{margin:0;white-space:pre-wrap;word-break:break-word;font:12px/1.55 var(--mono);max-height:260px;overflow:auto;padding:12px 14px;border-radius:14px;background:var(--surface);border:1px solid var(--line);color:var(--muted);user-select:text}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 @media (max-width:380px){.date .dow{font-size:52px}.bib-num .n{font-size:140px}.phead .big{font-size:88px}}
 </style>
@@ -329,6 +337,49 @@ const GOALS=[
  ['2027-05-08','HYROX São Paulo','8 × 1 km + 8 estações · 8 ou 9 mai',false],
  ['2027-07-25','Meia da Nike · SP City','21 km · plano Runna de 4 abr a 25 jul',false]
 ];
+
+let xDays=7;
+function buildReport(n){
+ const end=TODAY>END?END:(TODAY<START?START:TODAY);
+ let from=n?addDays(end,-(n-1)):START;if(from<START)from=START;
+ const L=['RELATORIO DE TREINO · Yuri',fmtD(from)+' a '+fmtD(end)+' · gerado em '+fmtD(TODAY),''];
+ const TN={leve:'leve',qual:'qualidade',longao:'longao',prova:'prova'};
+ for(let k=from;k<=end;k=addDays(k,1)){
+  const p=plan(k);if(!p)continue;const s=state[k]||{},d=fromKey(k);
+  L.push(DOW3[d.getUTCDay()]+' '+fmtD(k)+' · semana '+weekNum(k));
+  if(p.run){const [t,km,name]=p.run;L.push('  Corrida: '+TN[t]+' '+kmFmt(km)+' km'+(name?' · '+name:'')+' → '+(s.run?'feita':'nao marcada'));}
+  else L.push('  Corrida: sem corrida');
+  if(p.gym){const unit=p.casa?'reps':'kg';L.push('  Academia: '+p.gym[0]);
+   p.gym[2].forEach((e,i)=>{const ld=(loads[k]||{})['g'+i];L.push('    '+(s['g'+i]?'[x] ':'[ ] ')+e[0]+' '+e[1]+(ld?' · '+ld+' '+unit:''));});}
+  else L.push('  Academia: sem');
+  const md=p.meals.filter(m=>s[m[0]]).length;
+  const pr=p.meals.reduce((a,m)=>a+(s[m[0]]&&m[2]?parseInt(m[2]):0),0),pt=p.meals.reduce((a,m)=>a+(m[2]?parseInt(m[2]):0),0);
+  L.push('  Refeicoes: '+md+'/'+p.meals.length+' · proteina marcada '+pr+' de '+pt+' g');
+  L.push('  Creatina: '+(s.creatina?'sim':'nao')+' · Agua: '+(s.agua?'sim':'nao'));
+  L.push('');
+ }
+ L.push('Peso hoje: ___ kg');
+ L.push('Sono / energia / dor: ___');
+ L.push('Fiz fora do app: ___');
+ return L.join('\n');
+}
+function exportSection(){
+ const opt=(v,t)=>`<option value="${v}" ${xDays===v?'selected':''}>${t}</option>`;
+ return `<section><div class="sh"><h3>Relatório</h3><span class="aside">pra me mandar</span></div><div class="xport">
+  <label class="xsel"><span class="lbl">Período</span><select id="xDays" aria-label="Período do relatório">${opt(7,'Últimos 7 dias')}${opt(14,'Últimos 14 dias')}${opt(0,'Tudo')}</select></label>
+  <div class="xrow"><button class="xbtn main" data-x="copy">Copiar relatório</button><button class="xbtn" data-x="dl">Baixar .txt</button></div>
+  <pre class="xpre" id="xpre">${esc(buildReport(xDays))}</pre></div></section>`;
+}
+function doExport(kind,btn){
+ const txt=buildReport(xDays);
+ const flash=(t)=>{if(!btn)return;const o=btn.textContent;btn.textContent=t;setTimeout(()=>{btn.textContent=o;},1600);};
+ if(kind==='dl'){
+  try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain;charset=utf-8'}));a.download='relatorio-yuri-'+TODAY+'.txt';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);flash('Baixado ✓');}
+  catch(e){flash('Use Copiar');}
+  return;}
+ const fb=()=>{try{const ta=document.createElement('textarea');ta.value=txt;ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();flash(ok?'Copiado ✓':'Selecione o texto');}catch(e){flash('Selecione o texto');}};
+ try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(()=>flash('Copiado ✓'),fb);}else fb();}catch(e){fb();}
+}
 function renderPlan(){
  const all=[];for(let k=START;k<=END;k=addDays(k,1))all.push(k);
  let kmT=0,kmD=0,runT=0,runD=0,gymT=0,gymD=0,mealT=0,mealD=0,full=0,past=0;
@@ -362,6 +413,7 @@ function renderPlan(){
   const tag=n===NWEEKS?'Prova':n===4?'Descarga':longR?'Longão '+kmFmt(longR[1])+' km':'';
   h+=`<button class="wk ${n===curW?'cur':''} ${n===NWEEKS?'race':''}" data-w="${n}"><span class="wk-n">${pad(n)}</span><span class="wk-body"><span class="wk-top"><span>${fmtD(days[0])} – ${fmtD(days[6])} · ${tag}</span><span class="mono">${kmFmt(r1(dn))}/${kmFmt(r1(t))}</span></span><span class="wkbar"><s style="width:${t/maxW*100}%"></s><i style="width:${dn/maxW*100}%"></i></span></span></button>`;}
  h+='</div></section>';
+ h+=exportSection();
  document.getElementById('main').innerHTML=h;
 }
 function setView(v){view=v;document.getElementById('tabDay').setAttribute('aria-selected',v==='day');document.getElementById('tabPlan').setAttribute('aria-selected',v==='plan');
@@ -454,7 +506,7 @@ async function persist(k){
 }
 function toggle(key){const cur=Object.assign({},state[sel]||{});if(cur[key])delete cur[key];else cur[key]=true;state[sel]=cur;render();persist(sel);}
 
-document.getElementById('main').addEventListener('click',e=>{const b=e.target.closest('.item');if(b){toggle(b.dataset.k);return;}
+document.getElementById('main').addEventListener('click',e=>{const xb=e.target.closest('[data-x]');if(xb){doExport(xb.dataset.x,xb);return;}const b=e.target.closest('.item');if(b){toggle(b.dataset.k);return;}
  const w=e.target.closest('.wk');if(w){const n=+w.dataset.w,days=weekDays(n);sel=days.includes(TODAY)?TODAY:days[0];setView('day');}});
 document.getElementById('main').addEventListener('input',e=>{
  const t=e.target;if(!t.classList||!t.classList.contains('load'))return;
@@ -466,6 +518,7 @@ document.getElementById('main').addEventListener('input',e=>{
 document.getElementById('main').addEventListener('focusout',e=>{
  if(e.target.classList&&e.target.classList.contains('load')&&needRender){setTimeout(()=>{if(!(document.activeElement&&document.activeElement.classList.contains('load'))){needRender=false;render();}},0);}
 });
+document.getElementById('main').addEventListener('change',e=>{if(e.target&&e.target.id==='xDays'){xDays=+e.target.value;render();}});
 document.getElementById('tabDay').addEventListener('click',()=>setView('day'));
 document.getElementById('tabPlan').addEventListener('click',()=>setView('plan'));
 document.getElementById('week').addEventListener('click',e=>{const b=e.target.closest('.day');if(b&&!b.disabled){sel=b.dataset.d;render();}});
