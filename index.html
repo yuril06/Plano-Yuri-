@@ -219,6 +219,9 @@ footer{display:flex;justify-content:center}
 .xbtn:active{transform:scale(.98)}
 .xbtn.main{background:var(--accent);color:var(--accent-ink);border-color:transparent}
 .xpre{margin:0;white-space:pre-wrap;word-break:break-word;font:12px/1.55 var(--mono);max-height:260px;overflow:auto;padding:12px 14px;border-radius:14px;background:var(--surface);border:1px solid var(--line);color:var(--muted);user-select:text}
+.vrow{grid-column:1/-1;display:flex;gap:6px;flex-wrap:wrap;padding:0 0 10px 38px}
+.vchip{min-height:32px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:var(--raise);color:var(--muted);font:600 12px var(--body);cursor:pointer}
+.vchip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:transparent}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 @media (max-width:380px){.date .dow{font-size:52px}.bib-num .n{font-size:140px}.phead .big{font-size:88px}}
 </style>
@@ -358,7 +361,7 @@ function buildReport(n){
   if(p.run){const [t,km,name]=p.run;L.push('  Corrida: '+TN[t]+' '+kmFmt(km)+' km'+(name?' · '+name:'')+' → '+(s.run?'feita':'nao marcada'));}
   else L.push('  Corrida: sem corrida');
   if(p.gym){const unit=p.casa?'reps':'kg';L.push('  Academia: '+p.gym[0]);
-   p.gym[2].forEach((e,i)=>{const ld=(loads[k]||{})['g'+i];L.push('    '+(s['g'+i]?'[x] ':'[ ] ')+e[0]+' '+e[1]+(ld?' · '+ld+' '+unit:''));});}
+   p.gym[2].forEach((e,i)=>{const ld=(loads[k]||{})['g'+i];const vv=VARIANTS[e[0]]?' ['+VARIANTS[e[0]][curVar(k,p.gymKey,i,e[0])]+']':'';L.push('    '+(s['g'+i]?'[x] ':'[ ] ')+(vv?VARIANTS[e[0]][curVar(k,p.gymKey,i,e[0])]:e[0])+' '+e[1]+(ld?' · '+ld+' '+unit:''));});}
   else L.push('  Academia: sem');
   if(p.core)L.push('  Core: '+(s.core?'feito':'nao marcado'));
   const md=p.meals.filter(m=>s[m[0]]).length;
@@ -427,15 +430,31 @@ function renderPlan(){
 }
 function setView(v){view=v;document.getElementById('tabDay').setAttribute('aria-selected',v==='day');document.getElementById('tabPlan').setAttribute('aria-selected',v==='plan');
  document.getElementById('dayHead').hidden=v!=='day';document.getElementById('week').hidden=v!=='day';render();window.scrollTo(0,0);}
+const VARIANTS={'Barra fixa ou puxada alta':['Barra fixa','Puxada alta'],'Crucifixo na máquina ou na polia':['Máquina','Polia / cross']};
+const VAR_FIX={'2026-11-09':{g1:1,g4:0},'2026-11-16':{g1:0,g4:1}}; // histórico de antes do seletor
+function varOf(k,j,name){
+ if(!VARIANTS[name])return null;
+ const sv=(loads[k]||{})['g'+j+'v'];if(sv!==undefined&&sv!=='')return +sv;
+ const fx=(VAR_FIX[k]||{})['g'+j];if(fx!==undefined)return fx;
+ return null;
+}
+function curVar(k,gk,j,name){
+ const v=varOf(k,j,name);if(v!==null)return v;
+ for(let d=addDays(k,-1);d>=START;d=addDays(d,-1)){if(gymKeyFor(d)===gk){const def=gymDef(d,gk),jj=def[2].findIndex(e=>e[0]===name);if(jj>=0){const pv=varOf(d,jj,name);if(pv!==null)return pv;}}}
+ return 0;
+}
 function lastLoad(gk,i,before){
  const cur=gymDef(before,gk),nm=cur&&cur[2][i]&&cur[2][i][0];if(!nm)return null;
- for(let k=addDays(before,-1);k>=START;k=addDays(k,-1)){if(gymKeyFor(k)===gk){const d=gymDef(k,gk),j=d[2].findIndex(e=>e[0]===nm);if(j>=0){const v=(loads[k]||{})['g'+j];if(v)return {v,k};}}}
+ const vs=VARIANTS[nm],want=vs?curVar(before,gk,i,nm):null;
+ for(let k=addDays(before,-1);k>=START;k=addDays(k,-1)){if(gymKeyFor(k)===gk){const d=gymDef(k,gk),j=d[2].findIndex(e=>e[0]===nm);if(j>=0){const v=(loads[k]||{})['g'+j];if(v){if(vs){const pv=varOf(k,j,nm);if((pv===null?0:pv)!==want)continue;}return {v,k,vn:vs?vs[want]:''};}}}}
  return null;
 }
 function exRow(i,e,gk){
  const unit=CASA[gk]?'reps':'kg';
  const key='g'+i,v=(loads[sel]||{})[key]||'',last=lastLoad(gk,i,sel);
- return `<div class="exrow"><button class="item ex" role="checkbox" aria-checked="${isOn(key)}" data-k="${key}">${BOX}<span class="it"><span class="t">${esc(e[0])}</span><span class="d"><span class="mono">${esc(e[1])}</span>${e[2]?' · '+esc(e[2]):''}</span>${last?`<span class="last">última: ${esc(last.v)} ${unit} · ${fmtD(last.k)}</span>`:''}</span></button><label class="loadwrap"><input class="load" id="load-${key}" data-l="${key}" inputmode="decimal" autocomplete="off" maxlength="10" placeholder="—" value="${esc(v)}" aria-label="${unit==='reps'?'Reps':'Carga'} em ${esc(e[0])}"><span>${unit}</span></label></div>`;
+ const vs=VARIANTS[e[0]],cv=vs?curVar(sel,gk,i,e[0]):null;
+ const vrow=vs?`<div class="vrow" role="group" aria-label="Variação de ${esc(e[0])}">${vs.map((n,x)=>`<button class="vchip" data-vk="${i}:${x}" aria-pressed="${cv===x}">${esc(n)}</button>`).join('')}</div>`:'';
+ return `<div class="exrow"><button class="item ex" role="checkbox" aria-checked="${isOn(key)}" data-k="${key}">${BOX}<span class="it"><span class="t">${esc(vs?vs[cv]:e[0])}</span><span class="d"><span class="mono">${esc(e[1])}</span>${e[2]?' · '+esc(e[2]):''}</span>${last?`<span class="last">última: ${esc(last.v)} ${unit}${last.vn?' · '+esc(last.vn):''} · ${fmtD(last.k)}</span>`:''}</span></button><label class="loadwrap"><input class="load" id="load-${key}" data-l="${key}" inputmode="decimal" autocomplete="off" maxlength="10" placeholder="—" value="${esc(v)}" aria-label="${unit==='reps'?'Reps':'Carga'} em ${esc(vs?vs[cv]:e[0])}"><span>${unit}</span></label>${vrow}</div>`;
 }
 let needRender=false;
 
@@ -517,7 +536,7 @@ async function persist(k){
 }
 function toggle(key){const cur=Object.assign({},state[sel]||{});if(cur[key])delete cur[key];else cur[key]=true;state[sel]=cur;render();persist(sel);}
 
-document.getElementById('main').addEventListener('click',e=>{const xb=e.target.closest('[data-x]');if(xb){doExport(xb.dataset.x,xb);return;}const b=e.target.closest('.item');if(b){toggle(b.dataset.k);return;}
+document.getElementById('main').addEventListener('click',e=>{const xb=e.target.closest('[data-x]');if(xb){doExport(xb.dataset.x,xb);return;}const vb=e.target.closest('[data-vk]');if(vb){const pr=vb.dataset.vk.split(':'),cur=Object.assign({},loads[sel]||{});cur['g'+pr[0]+'v']=pr[1];loads[sel]=cur;saveLocal();render();persist(sel);return;}const b=e.target.closest('.item');if(b){toggle(b.dataset.k);return;}
  const w=e.target.closest('.wk');if(w){const n=+w.dataset.w,days=weekDays(n);sel=days.includes(TODAY)?TODAY:days[0];setView('day');}});
 document.getElementById('main').addEventListener('input',e=>{
  const t=e.target;if(!t.classList||!t.classList.contains('load'))return;
