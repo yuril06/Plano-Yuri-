@@ -255,7 +255,7 @@ const MON=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','de
 const RUNS={
  '2026-11-09':['leve',4],'2026-11-12':['qual',5,'1 km repetições','Na esteira. Aquece 10 min trotando e faz os tiros pelo esforço: a perna ainda pode estar pesada do Inferior A. Amanhã tem tiro de novo, então não vai até o limite.'],'2026-11-13':['qual',4,'Tiros de 300 m'],
  '2026-11-16':['leve',5],'2026-11-18':['qual',5,'Treino intervalado por km','Esteira, incline 1%. 1 km aquecendo a 9,5 km/h. Depois 3 tiros de 1 km a 12,5 km/h (4:48/km), com 200 m a 8 km/h entre eles. Fecha com 600 m a 9 km/h. Forte mas controlado: a perna ainda pode estar pesada de ontem, então se precisar aceita 5:00/km.'],'2026-11-21':['longao',7,'','Leve do começo ao fim, a 9,5 a 10 km/h (6:00 a 6:20/km). Tem que dar pra conversar. Se for na rua, deixa o Strava gravando.'],
- '2026-11-24':['qual',5,'Repetições a cada 1,5 km','Na rua, depois do Inferior A (ou antes, se preferir). 1 km aquecendo a 6:15/km. Depois 2 repetições de 1,5 km a 5:00 a 5:05/km (esforço 7 de 10, não passa de 4:55), com 400 m trotando bem leve entre elas. Fecha com 600 m soltinho.'],'2026-11-25':['leve',5,'','Leve de verdade, a 9 a 9,5 km/h (6:20 a 6:40/km), dá pra conversar. Solta a perna depois do Inferior A e das repetições de ontem. Se estiver muito pesada, encurta.'],'2026-11-26':['qual',5.9,'200 m repetições'],'2026-11-28':['longao',8],
+ '2026-11-24':['qual',5,'Repetições a cada 1,5 km','Na rua, depois do Inferior A (ou antes, se preferir). 1 km aquecendo a 6:15/km. Depois 2 repetições de 1,5 km a 5:00 a 5:05/km (esforço 7 de 10, não passa de 4:55), com 400 m trotando bem leve entre elas. Fecha com 600 m soltinho.'],'2026-11-26':['leve',5,'','Leve de verdade, a 9 a 9,5 km/h (6:20 a 6:40/km), dá pra conversar. Solta a perna depois do Inferior A de terça. Se estiver muito pesada, encurta.'],'2026-11-27':['qual',5.9,'200 m repetições','1,5 km aquecendo a 6:20/km. Depois 10 repetições de 200 m rápidas, uns 50 a 55 s cada (esforço 7 a 8, não é sprint), com 200 m andando ou trotando bem leve entre elas. Fecha com 400 m soltinho. Se der, faz a corrida antes do Inferior B, ou com algumas horas de intervalo. O longão fica pra domingo, com 48 h de folga da perna.'],'2026-11-29':['longao',8,'','Longão leve de verdade, a 9,5 a 10 km/h (6:00 a 6:20/km). Tem que dar pra conversar. Segura a saída: nada de 4:36 no primeiro km. Strava gravando.'],
  '2026-11-30':['leve',5],'2026-12-01':['qual',5,'500 m contínuos'],'2026-12-03':['qual',5,'400 m repetições'],'2026-12-05':['longao',6,'','Semana de descarga: leve e solto.'],
  '2026-12-07':['leve',6],'2026-12-08':['qual',6,'Treino de ritmo 2-1-1'],'2026-12-10':['qual',6,'Drop down'],'2026-12-12':['longao',8],
  '2026-12-14':['leve',6],'2026-12-15':['qual',7,'Drop set com repetições'],'2026-12-17':['qual',6,'Treino intervalado de 1 km'],'2026-12-19':['longao',10,'','Primeira vez nos 10 km. Leve do começo ao fim, sem olhar o pace.'],
@@ -280,6 +280,7 @@ const GYM={
 const GYM_NEW_FROM='2026-11-17';
 const BIKE={}; // cardio extra por data
 const CORE_DOW=[2,4,6]; // core: dias de perna (ter, qui) + sábado
+const CORE_OVERRIDE={'2026-11-26':false,'2026-11-27':true,'2026-11-28':true}; // semana de 25/11 deslocada
 const GYM_OLD={
  infA:['Inferior A','força',[['Agachamento livre','4×5 · RIR 2','75 kg'],['Stiff','3×6–8 · RIR 2','60 kg'],['Búlgaro com halteres','3×8 cada perna','2×12 kg · esquerda primeiro'],['Panturrilha em pé','4×10–12','pausa 1 s embaixo'],['Roda abdominal','3×8–10','']]],
  infB:['Inferior B','unilateral e potência',[['Terra convencional','3×5 · RIR 3','80 kg'],['Cadeira extensora unilateral','3×10–12 cada perna','esquerda primeiro · segura 1 s em cima'],['Leg press','3×10–12 · RIR 2',''],['Mesa flexora','3×10–12',''],['Panturrilha sentado','3×15',''],['Pallof press','3×10 cada lado','']]]
@@ -321,7 +322,7 @@ try{state=JSON.parse(localStorage.getItem('hoje-checks')||'{}')||{};}catch(e){st
 try{loads=JSON.parse(localStorage.getItem('hoje-loads')||'{}')||{};}catch(e){loads={};}
 
 // ajustes pontuais de academia por data (null = sem academia)
-const GYM_OVERRIDE={'2026-11-10':null,'2026-11-11':'infA','2026-11-12':'braco','2026-11-13':'infB','2026-11-14':null,'2026-11-15':null,'2026-11-16':'supA','2026-11-17':'infA','2026-11-18':'supB','2026-11-19':'infB','2026-11-20':null};
+const GYM_OVERRIDE={'2026-11-10':null,'2026-11-11':'infA','2026-11-12':'braco','2026-11-13':'infB','2026-11-14':null,'2026-11-15':null,'2026-11-16':'supA','2026-11-17':'infA','2026-11-18':'supB','2026-11-19':'infB','2026-11-20':null,'2026-11-25':null,'2026-11-26':'braco','2026-11-27':'infB','2026-11-28':'supB','2026-11-29':null};
 function gymKeyFor(k){if(!GYM_ON)return null;if(k in GYM_OVERRIDE)return GYM_OVERRIDE[k];const dow=fromKey(k).getUTCDay();return GYM_BY_DOW[dow]||null;}
 function plan(k){
  if(k<START||k>END) return null;
@@ -331,7 +332,7 @@ function plan(k){
  if(r){blocks.run=r;items.push('run');}
  const gk=gymKeyFor(k);
  if(gk){const g=gymDef(k,gk);blocks.gym=g;blocks.gymKey=gk;blocks.casa=!!CASA[gk];g[2].forEach((_,i)=>items.push('g'+i));}
- if(CORE_DOW.includes(dow)&&k>=GYM_NEW_FROM){blocks.core=true;items.push('core');}
+ if((k in CORE_OVERRIDE?CORE_OVERRIDE[k]:CORE_DOW.includes(dow))&&k>=GYM_NEW_FROM){blocks.core=true;items.push('core');}
  if(BIKE[k]){blocks.bike=BIKE[k];items.push('bike');}
  if(dow===0&&!r){blocks.along=true;items.push('along');}
  blocks.meals=meals(r&&(r[0]==='longao'||r[0]==='prova')?'long':(dow===0&&!r?'rest':(gk?'gym':'normal')));blocks.meals.forEach(m=>items.push(m[0]));
